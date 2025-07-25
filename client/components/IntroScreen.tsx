@@ -55,7 +55,7 @@ export function IntroScreen({ onComplete }: IntroScreenProps) {
           <motion.div
             initial={{ scale: 0, rotate: -180 }}
             animate={{ scale: 1, rotate: 0 }}
-            transition={{ duration: 1.2, ease: "easeOutBack" }}
+            transition={{ duration: 1.2, ease: [0.34, 1.56, 0.64, 1] }}
             className="mb-8"
           >
             <div className="relative">
