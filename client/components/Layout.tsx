@@ -20,6 +20,7 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   const location = useLocation();
   const [darkMode, setDarkMode] = useState(false);
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     if (darkMode) {
@@ -93,10 +94,9 @@ export function Layout({ children }: LayoutProps) {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-                    <Avatar className="h-9 w-9">
-                      <AvatarImage src={user.avatar} alt={user.name} />
-                      <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
-                    </Avatar>
+                    <div className="h-8 w-8 rounded-full bg-herbal-600 flex items-center justify-center text-white text-sm font-medium">
+                      {user.name.charAt(0).toUpperCase()}
+                    </div>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56" align="end" forceMount>
