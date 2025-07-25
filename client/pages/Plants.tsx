@@ -1,66 +1,97 @@
-import { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { 
-  Search, 
-  Filter, 
-  Grid3X3, 
-  List, 
+import { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import {
+  Search,
+  Filter,
+  Grid3X3,
+  List,
   SlidersHorizontal,
   Star,
   Heart,
   Leaf,
-  ArrowUpDown
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { allPlants, plantCategories } from '@/data/plants';
+  ArrowUpDown,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { allPlants, plantCategories } from "@/data/plants";
 
 export default function Plants() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [selectedAvailability, setSelectedAvailability] = useState<string>('all');
-  const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
-  const [sortBy, setSortBy] = useState<string>('name');
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedAvailability, setSelectedAvailability] =
+    useState<string>("all");
+  const [selectedDifficulty, setSelectedDifficulty] = useState<string>("all");
+  const [sortBy, setSortBy] = useState<string>("name");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showFilters, setShowFilters] = useState(false);
 
   // Filter and sort plants
   const filteredPlants = useMemo(() => {
-    let filtered = allPlants.filter(plant => {
-      const matchesSearch = 
+    let filtered = allPlants.filter((plant) => {
+      const matchesSearch =
         plant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        plant.scientificName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        plant.benefits.some(benefit => benefit.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        plant.uses.some(use => use.toLowerCase().includes(searchQuery.toLowerCase()));
-      
-      const matchesCategory = selectedCategory === 'all' || 
-        plant.category.some(cat => cat.toLowerCase() === selectedCategory.toLowerCase());
-      
-      const matchesAvailability = selectedAvailability === 'all' || 
-        plant.availability === selectedAvailability;
-      
-      const matchesDifficulty = selectedDifficulty === 'all' || 
-        plant.difficulty === selectedDifficulty;
+        plant.scientificName
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()) ||
+        plant.benefits.some((benefit) =>
+          benefit.toLowerCase().includes(searchQuery.toLowerCase()),
+        ) ||
+        plant.uses.some((use) =>
+          use.toLowerCase().includes(searchQuery.toLowerCase()),
+        );
 
-      return matchesSearch && matchesCategory && matchesAvailability && matchesDifficulty;
+      const matchesCategory =
+        selectedCategory === "all" ||
+        plant.category.some(
+          (cat) => cat.toLowerCase() === selectedCategory.toLowerCase(),
+        );
+
+      const matchesAvailability =
+        selectedAvailability === "all" ||
+        plant.availability === selectedAvailability;
+
+      const matchesDifficulty =
+        selectedDifficulty === "all" || plant.difficulty === selectedDifficulty;
+
+      return (
+        matchesSearch &&
+        matchesCategory &&
+        matchesAvailability &&
+        matchesDifficulty
+      );
     });
 
     // Sort plants
     filtered.sort((a, b) => {
       switch (sortBy) {
-        case 'name':
+        case "name":
           return a.name.localeCompare(b.name);
-        case 'scientific':
+        case "scientific":
           return a.scientificName.localeCompare(b.scientificName);
-        case 'availability':
+        case "availability":
           const availabilityOrder = { common: 0, moderate: 1, rare: 2 };
-          return availabilityOrder[a.availability] - availabilityOrder[b.availability];
-        case 'difficulty':
+          return (
+            availabilityOrder[a.availability] -
+            availabilityOrder[b.availability]
+          );
+        case "difficulty":
           const difficultyOrder = { easy: 0, moderate: 1, difficult: 2 };
           return difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty];
         default:
@@ -69,17 +100,29 @@ export default function Plants() {
     });
 
     return filtered;
-  }, [searchQuery, selectedCategory, selectedAvailability, selectedDifficulty, sortBy]);
+  }, [
+    searchQuery,
+    selectedCategory,
+    selectedAvailability,
+    selectedDifficulty,
+    sortBy,
+  ]);
 
   const clearFilters = () => {
-    setSearchQuery('');
-    setSelectedCategory('all');
-    setSelectedAvailability('all');
-    setSelectedDifficulty('all');
-    setSortBy('name');
+    setSearchQuery("");
+    setSelectedCategory("all");
+    setSelectedAvailability("all");
+    setSelectedDifficulty("all");
+    setSortBy("name");
   };
 
-  const PlantCard = ({ plant, index }: { plant: typeof allPlants[0], index: number }) => (
+  const PlantCard = ({
+    plant,
+    index,
+  }: {
+    plant: (typeof allPlants)[0];
+    index: number;
+  }) => (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -93,20 +136,31 @@ export default function Plants() {
             className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
           />
           <div className="absolute top-3 left-3">
-            <Badge className={`
-              ${plant.availability === 'common' ? 'bg-green-500' : 
-                plant.availability === 'moderate' ? 'bg-yellow-500' : 'bg-red-500'}
-            `}>
+            <Badge
+              className={`
+              ${
+                plant.availability === "common"
+                  ? "bg-green-500"
+                  : plant.availability === "moderate"
+                    ? "bg-yellow-500"
+                    : "bg-red-500"
+              }
+            `}
+            >
               {plant.availability}
             </Badge>
           </div>
           <div className="absolute top-3 right-3">
-            <Button size="sm" variant="ghost" className="text-white hover:bg-white/20">
+            <Button
+              size="sm"
+              variant="ghost"
+              className="text-white hover:bg-white/20"
+            >
               <Heart className="w-4 h-4" />
             </Button>
           </div>
         </div>
-        
+
         <CardHeader className="pb-3">
           <div className="flex justify-between items-start">
             <div>
@@ -122,12 +176,12 @@ export default function Plants() {
             </span>
           </div>
         </CardHeader>
-        
+
         <CardContent className="pt-0">
           <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
             {plant.description}
           </p>
-          
+
           <div className="flex flex-wrap gap-1 mb-4">
             {plant.benefits.slice(0, 3).map((benefit) => (
               <Badge key={benefit} variant="secondary" className="text-xs">
@@ -140,7 +194,7 @@ export default function Plants() {
               </Badge>
             )}
           </div>
-          
+
           <Link to={`/plants/${plant.id}`}>
             <Button className="w-full bg-herbal-600 hover:bg-herbal-700">
               Learn More
@@ -151,7 +205,13 @@ export default function Plants() {
     </motion.div>
   );
 
-  const PlantListItem = ({ plant, index }: { plant: typeof allPlants[0], index: number }) => (
+  const PlantListItem = ({
+    plant,
+    index,
+  }: {
+    plant: (typeof allPlants)[0];
+    index: number;
+  }) => (
     <motion.div
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
@@ -184,18 +244,24 @@ export default function Plants() {
                   </Button>
                 </div>
               </div>
-              
+
               <p className="text-sm text-muted-foreground mb-2 line-clamp-1">
                 {plant.description}
               </p>
-              
+
               <div className="flex items-center justify-between">
                 <div className="flex flex-wrap gap-1">
-                  <Badge className={`
-                    ${plant.availability === 'common' ? 'bg-green-100 text-green-800' : 
-                      plant.availability === 'moderate' ? 'bg-yellow-100 text-yellow-800' : 
-                      'bg-red-100 text-red-800'}
-                  `}>
+                  <Badge
+                    className={`
+                    ${
+                      plant.availability === "common"
+                        ? "bg-green-100 text-green-800"
+                        : plant.availability === "moderate"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : "bg-red-100 text-red-800"
+                    }
+                  `}
+                  >
                     {plant.availability}
                   </Badge>
                   {plant.benefits.slice(0, 2).map((benefit) => (
@@ -204,7 +270,7 @@ export default function Plants() {
                     </Badge>
                   ))}
                 </div>
-                
+
                 <Link to={`/plants/${plant.id}`}>
                   <Button size="sm" variant="outline">
                     View Details
@@ -233,8 +299,8 @@ export default function Plants() {
               Medicinal Plants Database
             </h1>
             <p className="text-xl opacity-90 max-w-2xl mx-auto">
-              Discover 100+ healing plants with detailed information, preparation methods, 
-              and affordable sourcing options.
+              Discover 100+ healing plants with detailed information,
+              preparation methods, and affordable sourcing options.
             </p>
           </motion.div>
         </div>
@@ -254,7 +320,7 @@ export default function Plants() {
                 className="pl-10 h-12"
               />
             </div>
-            
+
             <div className="flex gap-2">
               <Button
                 variant="outline"
@@ -264,8 +330,11 @@ export default function Plants() {
                 <SlidersHorizontal className="w-4 h-4 mr-2" />
                 Filters
               </Button>
-              
-              <Tabs value={viewMode} onValueChange={(value) => setViewMode(value as 'grid' | 'list')}>
+
+              <Tabs
+                value={viewMode}
+                onValueChange={(value) => setViewMode(value as "grid" | "list")}
+              >
                 <TabsList className="h-12">
                   <TabsTrigger value="grid" className="h-10">
                     <Grid3X3 className="w-4 h-4" />
@@ -282,11 +351,14 @@ export default function Plants() {
           {showFilters && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
+              animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 p-4 bg-muted/50 rounded-lg"
             >
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <Select
+                value={selectedCategory}
+                onValueChange={setSelectedCategory}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Category" />
                 </SelectTrigger>
@@ -300,7 +372,10 @@ export default function Plants() {
                 </SelectContent>
               </Select>
 
-              <Select value={selectedAvailability} onValueChange={setSelectedAvailability}>
+              <Select
+                value={selectedAvailability}
+                onValueChange={setSelectedAvailability}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Availability" />
                 </SelectTrigger>
@@ -312,7 +387,10 @@ export default function Plants() {
                 </SelectContent>
               </Select>
 
-              <Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
+              <Select
+                value={selectedDifficulty}
+                onValueChange={setSelectedDifficulty}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Difficulty" />
                 </SelectTrigger>
@@ -336,7 +414,11 @@ export default function Plants() {
                 </SelectContent>
               </Select>
 
-              <Button variant="outline" onClick={clearFilters} className="w-full">
+              <Button
+                variant="outline"
+                onClick={clearFilters}
+                className="w-full"
+              >
                 Clear Filters
               </Button>
             </motion.div>
@@ -347,7 +429,10 @@ export default function Plants() {
             <span>
               Showing {filteredPlants.length} of {allPlants.length} plants
             </span>
-            {(searchQuery || selectedCategory !== 'all' || selectedAvailability !== 'all' || selectedDifficulty !== 'all') && (
+            {(searchQuery ||
+              selectedCategory !== "all" ||
+              selectedAvailability !== "all" ||
+              selectedDifficulty !== "all") && (
               <Button variant="ghost" size="sm" onClick={clearFilters}>
                 Clear all filters
               </Button>
@@ -367,17 +452,19 @@ export default function Plants() {
               <Button onClick={clearFilters}>Clear Filters</Button>
             </div>
           ) : (
-            <div className={
-              viewMode === 'grid'
-                ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
-                : 'space-y-4'
-            }>
+            <div
+              className={
+                viewMode === "grid"
+                  ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+                  : "space-y-4"
+              }
+            >
               {filteredPlants.map((plant, index) =>
-                viewMode === 'grid' ? (
+                viewMode === "grid" ? (
                   <PlantCard key={plant.id} plant={plant} index={index} />
                 ) : (
                   <PlantListItem key={plant.id} plant={plant} index={index} />
-                )
+                ),
               )}
             </div>
           )}

@@ -1,49 +1,61 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { 
-  User, 
-  Globe, 
-  Bell, 
-  Shield, 
-  Palette, 
+import { useState } from "react";
+import { motion } from "framer-motion";
+import {
+  User,
+  Globe,
+  Bell,
+  Shield,
+  Palette,
   LogOut,
   Settings as SettingsIcon,
   Save,
   Filter,
   Volume2,
   Moon,
-  Sun
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { Separator } from '@/components/ui/separator';
-import { Badge } from '@/components/ui/badge';
-import { useAuth } from '@/contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+  Sun,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Settings() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  
+
   // Settings state
-  const [language, setLanguage] = useState('en');
+  const [language, setLanguage] = useState("en");
   const [notifications, setNotifications] = useState(true);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const [autoPlay, setAutoPlay] = useState(false);
-  
+
   // Filter preferences
-  const [defaultSort, setDefaultSort] = useState('name');
-  const [defaultView, setDefaultView] = useState('grid');
+  const [defaultSort, setDefaultSort] = useState("name");
+  const [defaultView, setDefaultView] = useState("grid");
   const [showPrices, setShowPrices] = useState(true);
-  const [preferredUnits, setPreferredUnits] = useState('metric');
+  const [preferredUnits, setPreferredUnits] = useState("metric");
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate("/");
   };
 
   const handleSaveSettings = () => {
@@ -57,26 +69,26 @@ export default function Settings() {
       defaultSort,
       defaultView,
       showPrices,
-      preferredUnits
+      preferredUnits,
     };
-    
-    localStorage.setItem('herbwise-settings', JSON.stringify(settings));
-    
+
+    localStorage.setItem("herbwise-settings", JSON.stringify(settings));
+
     // Show success message (you could use a toast here)
-    alert('Settings saved successfully!');
+    alert("Settings saved successfully!");
   };
 
   const languages = [
-    { code: 'en', name: 'English', flag: '🇺🇸' },
-    { code: 'es', name: 'Español', flag: '🇪🇸' },
-    { code: 'fr', name: 'Français', flag: '🇫🇷' },
-    { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
-    { code: 'it', name: 'Italiano', flag: '🇮🇹' },
-    { code: 'pt', name: 'Português', flag: '🇵🇹' },
-    { code: 'zh', name: '中文', flag: '🇨🇳' },
-    { code: 'ja', name: '日本語', flag: '🇯🇵' },
-    { code: 'hi', name: 'हिन्दी', flag: '🇮🇳' },
-    { code: 'ar', name: 'العربية', flag: '🇸🇦' }
+    { code: "en", name: "English", flag: "🇺🇸" },
+    { code: "es", name: "Español", flag: "🇪🇸" },
+    { code: "fr", name: "Français", flag: "🇫🇷" },
+    { code: "de", name: "Deutsch", flag: "🇩🇪" },
+    { code: "it", name: "Italiano", flag: "🇮🇹" },
+    { code: "pt", name: "Português", flag: "🇵🇹" },
+    { code: "zh", name: "中文", flag: "🇨🇳" },
+    { code: "ja", name: "日本語", flag: "🇯🇵" },
+    { code: "hi", name: "हिन्दी", flag: "🇮🇳" },
+    { code: "ar", name: "العربية", flag: "🇸🇦" },
   ];
 
   return (
@@ -95,7 +107,9 @@ export default function Settings() {
             </div>
             <div>
               <h1 className="text-3xl font-bold">Settings</h1>
-              <p className="text-muted-foreground">Customize your HerbWise experience</p>
+              <p className="text-muted-foreground">
+                Customize your HerbWise experience
+              </p>
             </div>
           </div>
         </motion.div>
@@ -114,16 +128,21 @@ export default function Settings() {
                 {user ? (
                   <div className="text-center">
                     <img
-                      src={user.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.email}`}
+                      src={
+                        user.avatar ||
+                        `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.email}`
+                      }
                       alt={user.name}
                       className="w-20 h-20 rounded-full mx-auto mb-4"
                     />
                     <h3 className="font-semibold text-lg">{user.name}</h3>
                     <p className="text-muted-foreground">{user.email}</p>
-                    <Badge className="mt-2" variant="secondary">Premium User</Badge>
-                    
+                    <Badge className="mt-2" variant="secondary">
+                      Premium User
+                    </Badge>
+
                     <Separator className="my-4" />
-                    
+
                     <Button
                       variant="destructive"
                       onClick={handleLogout}
@@ -135,10 +154,10 @@ export default function Settings() {
                   </div>
                 ) : (
                   <div className="text-center">
-                    <p className="text-muted-foreground mb-4">Please sign in to access settings</p>
-                    <Button onClick={() => navigate('/signin')}>
-                      Sign In
-                    </Button>
+                    <p className="text-muted-foreground mb-4">
+                      Please sign in to access settings
+                    </p>
+                    <Button onClick={() => navigate("/signin")}>Sign In</Button>
                   </div>
                 )}
               </CardContent>
@@ -178,16 +197,23 @@ export default function Settings() {
                       </SelectContent>
                     </Select>
                   </div>
-                  
+
                   <div>
                     <Label htmlFor="units">Measurement Units</Label>
-                    <Select value={preferredUnits} onValueChange={setPreferredUnits}>
+                    <Select
+                      value={preferredUnits}
+                      onValueChange={setPreferredUnits}
+                    >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="metric">Metric (kg, cm, °C)</SelectItem>
-                        <SelectItem value="imperial">Imperial (lb, in, °F)</SelectItem>
+                        <SelectItem value="metric">
+                          Metric (kg, cm, °C)
+                        </SelectItem>
+                        <SelectItem value="imperial">
+                          Imperial (lb, in, °F)
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -210,7 +236,9 @@ export default function Settings() {
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Dark Mode</Label>
-                    <p className="text-sm text-muted-foreground">Switch to dark theme</p>
+                    <p className="text-sm text-muted-foreground">
+                      Switch to dark theme
+                    </p>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Sun className="w-4 h-4" />
@@ -218,15 +246,20 @@ export default function Settings() {
                     <Moon className="w-4 h-4" />
                   </div>
                 </div>
-                
+
                 <Separator />
-                
+
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Show Prices</Label>
-                    <p className="text-sm text-muted-foreground">Display plant pricing information</p>
+                    <p className="text-sm text-muted-foreground">
+                      Display plant pricing information
+                    </p>
                   </div>
-                  <Switch checked={showPrices} onCheckedChange={setShowPrices} />
+                  <Switch
+                    checked={showPrices}
+                    onCheckedChange={setShowPrices}
+                  />
                 </div>
               </CardContent>
             </Card>
@@ -252,14 +285,18 @@ export default function Settings() {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="name">Name (A-Z)</SelectItem>
-                        <SelectItem value="scientific">Scientific Name</SelectItem>
-                        <SelectItem value="availability">Availability</SelectItem>
+                        <SelectItem value="scientific">
+                          Scientific Name
+                        </SelectItem>
+                        <SelectItem value="availability">
+                          Availability
+                        </SelectItem>
                         <SelectItem value="difficulty">Difficulty</SelectItem>
                         <SelectItem value="price">Price</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
-                  
+
                   <div>
                     <Label htmlFor="defaultView">Default View</Label>
                     <Select value={defaultView} onValueChange={setDefaultView}>
@@ -291,30 +328,42 @@ export default function Settings() {
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Push Notifications</Label>
-                    <p className="text-sm text-muted-foreground">Receive updates and reminders</p>
+                    <p className="text-sm text-muted-foreground">
+                      Receive updates and reminders
+                    </p>
                   </div>
-                  <Switch checked={notifications} onCheckedChange={setNotifications} />
+                  <Switch
+                    checked={notifications}
+                    onCheckedChange={setNotifications}
+                  />
                 </div>
-                
+
                 <Separator />
-                
+
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Sound Effects</Label>
-                    <p className="text-sm text-muted-foreground">Enable audio feedback</p>
+                    <p className="text-sm text-muted-foreground">
+                      Enable audio feedback
+                    </p>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Volume2 className="w-4 h-4" />
-                    <Switch checked={soundEnabled} onCheckedChange={setSoundEnabled} />
+                    <Switch
+                      checked={soundEnabled}
+                      onCheckedChange={setSoundEnabled}
+                    />
                   </div>
                 </div>
-                
+
                 <Separator />
-                
+
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>AI Voice Auto-play</Label>
-                    <p className="text-sm text-muted-foreground">Automatically speak AI responses</p>
+                    <p className="text-sm text-muted-foreground">
+                      Automatically speak AI responses
+                    </p>
                   </div>
                   <Switch checked={autoPlay} onCheckedChange={setAutoPlay} />
                 </div>
@@ -340,7 +389,10 @@ export default function Settings() {
                   <Button variant="outline" className="justify-start">
                     Download My Data
                   </Button>
-                  <Button variant="outline" className="justify-start text-red-600 hover:text-red-700">
+                  <Button
+                    variant="outline"
+                    className="justify-start text-red-600 hover:text-red-700"
+                  >
                     Delete Account
                   </Button>
                 </div>
@@ -349,7 +401,7 @@ export default function Settings() {
 
             {/* Save Button */}
             <div className="flex justify-end">
-              <Button 
+              <Button
                 onClick={handleSaveSettings}
                 size="lg"
                 className="bg-herbal-600 hover:bg-herbal-700"

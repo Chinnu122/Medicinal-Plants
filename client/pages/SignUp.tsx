@@ -1,25 +1,31 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Leaf, Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useAuth } from '@/contexts/AuthContext';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Leaf, Eye, EyeOff, Mail, Lock, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function SignUp() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [errors, setErrors] = useState<{ 
-    name?: string; 
-    email?: string; 
-    password?: string; 
-    confirmPassword?: string; 
+  const [errors, setErrors] = useState<{
+    name?: string;
+    email?: string;
+    password?: string;
+    confirmPassword?: string;
     general?: string;
   }>({});
   const { register, loading } = useAuth();
@@ -30,19 +36,21 @@ export default function SignUp() {
     setErrors({});
 
     // Basic validation
-    const newErrors: { 
-      name?: string; 
-      email?: string; 
-      password?: string; 
+    const newErrors: {
+      name?: string;
+      email?: string;
+      password?: string;
       confirmPassword?: string;
     } = {};
-    
-    if (!name) newErrors.name = 'Name is required';
-    if (!email) newErrors.email = 'Email is required';
-    if (!password) newErrors.password = 'Password is required';
-    if (password.length < 6) newErrors.password = 'Password must be at least 6 characters';
-    if (password !== confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
-    
+
+    if (!name) newErrors.name = "Name is required";
+    if (!email) newErrors.email = "Email is required";
+    if (!password) newErrors.password = "Password is required";
+    if (password.length < 6)
+      newErrors.password = "Password must be at least 6 characters";
+    if (password !== confirmPassword)
+      newErrors.confirmPassword = "Passwords do not match";
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -50,9 +58,9 @@ export default function SignUp() {
 
     const success = await register(name, email, password);
     if (success) {
-      navigate('/');
+      navigate("/");
     } else {
-      setErrors({ general: 'Registration failed. Please try again.' });
+      setErrors({ general: "Registration failed. Please try again." });
     }
   };
 
@@ -83,7 +91,7 @@ export default function SignUp() {
                   {errors.general}
                 </div>
               )}
-              
+
               <div className="space-y-2">
                 <Label htmlFor="name">Full Name</Label>
                 <div className="relative">
@@ -128,7 +136,7 @@ export default function SignUp() {
                   <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="password"
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     placeholder="Create a password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -155,7 +163,7 @@ export default function SignUp() {
                   <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="confirmPassword"
-                    type={showConfirmPassword ? 'text' : 'password'}
+                    type={showConfirmPassword ? "text" : "password"}
                     placeholder="Confirm your password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
@@ -172,7 +180,9 @@ export default function SignUp() {
                   </button>
                 </div>
                 {errors.confirmPassword && (
-                  <p className="text-sm text-red-600">{errors.confirmPassword}</p>
+                  <p className="text-sm text-red-600">
+                    {errors.confirmPassword}
+                  </p>
                 )}
               </div>
 
@@ -181,14 +191,17 @@ export default function SignUp() {
                 className="w-full bg-herbal-600 hover:bg-herbal-700"
                 disabled={loading}
               >
-                {loading ? 'Creating Account...' : 'Create Account'}
+                {loading ? "Creating Account..." : "Create Account"}
               </Button>
             </form>
 
             <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground">
-                Already have an account?{' '}
-                <Link to="/signin" className="text-herbal-600 hover:text-herbal-700 font-medium">
+                Already have an account?{" "}
+                <Link
+                  to="/signin"
+                  className="text-herbal-600 hover:text-herbal-700 font-medium"
+                >
                   Sign in
                 </Link>
               </p>

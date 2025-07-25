@@ -1,18 +1,28 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Leaf, Eye, EyeOff, Mail, Lock } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useAuth } from '@/contexts/AuthContext';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Leaf, Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function SignIn() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState<{ email?: string; password?: string; general?: string }>({});
+  const [errors, setErrors] = useState<{
+    email?: string;
+    password?: string;
+    general?: string;
+  }>({});
   const { login, loading } = useAuth();
   const navigate = useNavigate();
 
@@ -22,9 +32,9 @@ export default function SignIn() {
 
     // Basic validation
     const newErrors: { email?: string; password?: string } = {};
-    if (!email) newErrors.email = 'Email is required';
-    if (!password) newErrors.password = 'Password is required';
-    
+    if (!email) newErrors.email = "Email is required";
+    if (!password) newErrors.password = "Password is required";
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -32,9 +42,9 @@ export default function SignIn() {
 
     const success = await login(email, password);
     if (success) {
-      navigate('/');
+      navigate("/");
     } else {
-      setErrors({ general: 'Invalid email or password' });
+      setErrors({ general: "Invalid email or password" });
     }
   };
 
@@ -55,7 +65,8 @@ export default function SignIn() {
             </div>
             <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
             <CardDescription>
-              Sign in to your HerbWise account to continue your natural wellness journey
+              Sign in to your HerbWise account to continue your natural wellness
+              journey
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -65,7 +76,7 @@ export default function SignIn() {
                   {errors.general}
                 </div>
               )}
-              
+
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <div className="relative">
@@ -91,7 +102,7 @@ export default function SignIn() {
                   <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="password"
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -117,14 +128,17 @@ export default function SignIn() {
                 className="w-full bg-herbal-600 hover:bg-herbal-700"
                 disabled={loading}
               >
-                {loading ? 'Signing In...' : 'Sign In'}
+                {loading ? "Signing In..." : "Sign In"}
               </Button>
             </form>
 
             <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground">
-                Don't have an account?{' '}
-                <Link to="/signup" className="text-herbal-600 hover:text-herbal-700 font-medium">
+                Don't have an account?{" "}
+                <Link
+                  to="/signup"
+                  className="text-herbal-600 hover:text-herbal-700 font-medium"
+                >
                   Sign up
                 </Link>
               </p>

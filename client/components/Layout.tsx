@@ -73,7 +73,7 @@ export function Layout({ children }: LayoutProps) {
                     "flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                     location.pathname === item.href
                       ? "bg-herbal-100 text-herbal-700 dark:bg-herbal-800 dark:text-herbal-200"
-                      : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                      : "text-muted-foreground hover:text-foreground hover:bg-accent",
                   )}
                 >
                   <Icon className="w-4 h-4" />
@@ -101,7 +101,10 @@ export function Layout({ children }: LayoutProps) {
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-9 w-9 rounded-full">
+                  <Button
+                    variant="ghost"
+                    className="relative h-9 w-9 rounded-full"
+                  >
                     <div className="h-8 w-8 rounded-full bg-herbal-600 flex items-center justify-center text-white text-sm font-medium">
                       {user.name.charAt(0).toUpperCase()}
                     </div>
@@ -110,7 +113,9 @@ export function Layout({ children }: LayoutProps) {
                 <DropdownMenuContent className="w-56" align="end" forceMount>
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">{user.name}</p>
+                      <p className="text-sm font-medium leading-none">
+                        {user.name}
+                      </p>
                       <p className="text-xs leading-none text-muted-foreground">
                         {user.email}
                       </p>
@@ -135,7 +140,11 @@ export function Layout({ children }: LayoutProps) {
                 <Button variant="ghost" size="sm" asChild>
                   <Link to="/signin">Sign In</Link>
                 </Button>
-                <Button size="sm" className="bg-herbal-600 hover:bg-herbal-700" asChild>
+                <Button
+                  size="sm"
+                  className="bg-herbal-600 hover:bg-herbal-700"
+                  asChild
+                >
                   <Link to="/signup">Sign Up</Link>
                 </Button>
               </div>
@@ -145,9 +154,7 @@ export function Layout({ children }: LayoutProps) {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1">
-        {children}
-      </main>
+      <main className="flex-1">{children}</main>
 
       {/* Mobile Navigation */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur border-t border-border/40">
@@ -162,7 +169,7 @@ export function Layout({ children }: LayoutProps) {
                   "flex flex-col items-center justify-center space-y-1 text-xs transition-colors",
                   location.pathname === item.href
                     ? "text-herbal-600 dark:text-herbal-400"
-                    : "text-muted-foreground"
+                    : "text-muted-foreground",
                 )}
               >
                 <Icon className="w-5 h-5" />

@@ -1,28 +1,28 @@
-import { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { 
-  Send, 
-  Mic, 
-  MicOff, 
-  Bot, 
-  User, 
-  Loader, 
-  Volume2, 
+import { useState, useRef, useEffect } from "react";
+import { motion } from "framer-motion";
+import {
+  Send,
+  Mic,
+  MicOff,
+  Bot,
+  User,
+  Loader,
+  Volume2,
   VolumeX,
   Leaf,
   MessageCircle,
-  Sparkles
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { useAuth } from '@/contexts/AuthContext';
+  Sparkles,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface Message {
   id: string;
-  type: 'user' | 'assistant';
+  type: "user" | "assistant";
   content: string;
   timestamp: Date;
 }
@@ -30,8 +30,8 @@ interface Message {
 export default function AIAssistant() {
   const [messages, setMessages] = useState<Message[]>([
     {
-      id: '1',
-      type: 'assistant',
+      id: "1",
+      type: "assistant",
       content: `Hello! I'm your AI-powered medicinal plants assistant. I can help you with:
 
 • Finding the right plants for specific health conditions
@@ -41,10 +41,10 @@ export default function AIAssistant() {
 • Getting personalized wellness recommendations
 
 What would you like to know about medicinal plants today?`,
-      timestamp: new Date()
-    }
+      timestamp: new Date(),
+    },
   ]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [speechEnabled, setSpeechEnabled] = useState(true);
@@ -56,12 +56,13 @@ What would you like to know about medicinal plants today?`,
   const synthesis = window.speechSynthesis;
 
   useEffect(() => {
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
+      const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
       recognition.current = new SpeechRecognition();
       recognition.current.continuous = false;
       recognition.current.interimResults = false;
-      recognition.current.lang = 'en-US';
+      recognition.current.lang = "en-US";
 
       recognition.current.onresult = (event) => {
         const transcript = event.results[0][0].transcript;
@@ -80,47 +81,54 @@ What would you like to know about medicinal plants today?`,
   }, []);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   const callGoogleAI = async (prompt: string): Promise<string> => {
     try {
-      const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=AIzaSyBnaIQHdz6VXAfWL1B5wEny1dGzEdat9U0', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          contents: [{
-            parts: [{
-              text: `You are a knowledgeable medicinal plants expert and wellness assistant. Your responses should be:
+      const response = await fetch(
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=AIzaSyBnaIQHdz6VXAfWL1B5wEny1dGzEdat9U0",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [
+                  {
+                    text: `You are a knowledgeable medicinal plants expert and wellness assistant. Your responses should be:
 - Accurate and evidence-based
 - Focused on medicinal plants and natural remedies
 - Include safety warnings when appropriate
 - Mention consulting healthcare providers for serious conditions
 - Provide affordable, accessible alternatives when possible
 
-User question: ${prompt}`
-            }]
-          }],
-          generationConfig: {
-            temperature: 0.7,
-            topK: 40,
-            topP: 0.95,
-            maxOutputTokens: 1024,
-          }
-        })
-      });
+User question: ${prompt}`,
+                  },
+                ],
+              },
+            ],
+            generationConfig: {
+              temperature: 0.7,
+              topK: 40,
+              topP: 0.95,
+              maxOutputTokens: 1024,
+            },
+          }),
+        },
+      );
 
       const data = await response.json();
-      
+
       if (data.candidates && data.candidates[0] && data.candidates[0].content) {
         return data.candidates[0].content.parts[0].text;
       } else {
-        throw new Error('Invalid response from AI');
+        throw new Error("Invalid response from AI");
       }
     } catch (error) {
-      console.error('AI API Error:', error);
+      console.error("AI API Error:", error);
       return "I apologize, but I'm having trouble connecting to my knowledge base right now. Please try again in a moment, or feel free to browse our medicinal plants database for information.";
     }
   };
@@ -141,40 +149,40 @@ User question: ${prompt}`
 
     const userMessage: Message = {
       id: Date.now().toString(),
-      type: 'user',
+      type: "user",
       content: input.trim(),
-      timestamp: new Date()
+      timestamp: new Date(),
     };
 
-    setMessages(prev => [...prev, userMessage]);
-    setInput('');
+    setMessages((prev) => [...prev, userMessage]);
+    setInput("");
     setIsLoading(true);
 
     try {
       const aiResponse = await callGoogleAI(input.trim());
-      
+
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
-        type: 'assistant',
+        type: "assistant",
         content: aiResponse,
-        timestamp: new Date()
+        timestamp: new Date(),
       };
 
-      setMessages(prev => [...prev, assistantMessage]);
-      
+      setMessages((prev) => [...prev, assistantMessage]);
+
       // Speak the response if speech is enabled
       if (speechEnabled) {
         speakText(aiResponse);
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        type: 'assistant',
-        content: 'Sorry, I encountered an error. Please try again.',
-        timestamp: new Date()
+        type: "assistant",
+        content: "Sorry, I encountered an error. Please try again.",
+        timestamp: new Date(),
       };
-      setMessages(prev => [...prev, errorMessage]);
+      setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
     }
@@ -182,7 +190,7 @@ User question: ${prompt}`
 
   const handleVoiceInput = () => {
     if (!recognition.current) {
-      alert('Speech recognition is not supported in your browser.');
+      alert("Speech recognition is not supported in your browser.");
       return;
     }
 
@@ -196,7 +204,7 @@ User question: ${prompt}`
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
@@ -207,7 +215,7 @@ User question: ${prompt}`
     "How do I prepare turmeric for inflammation?",
     "Which plants help with digestive issues?",
     "What are affordable alternatives to expensive supplements?",
-    "How to grow medicinal herbs at home?"
+    "How to grow medicinal herbs at home?",
   ];
 
   return (
@@ -225,11 +233,15 @@ User question: ${prompt}`
               <Bot className="w-8 h-8 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-foreground">AI Plant Assistant</h1>
-              <p className="text-muted-foreground">Your personal medicinal plants expert</p>
+              <h1 className="text-3xl font-bold text-foreground">
+                AI Plant Assistant
+              </h1>
+              <p className="text-muted-foreground">
+                Your personal medicinal plants expert
+              </p>
             </div>
           </div>
-          
+
           {user && (
             <Badge variant="secondary" className="mb-4">
               <Sparkles className="w-3 h-3 mr-1" />
@@ -250,43 +262,58 @@ User question: ${prompt}`
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
-                    className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                    className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}
                   >
-                    <div className={`flex max-w-[80%] ${message.type === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+                    <div
+                      className={`flex max-w-[80%] ${message.type === "user" ? "flex-row-reverse" : "flex-row"}`}
+                    >
                       {/* Avatar */}
-                      <div className={`flex-shrink-0 ${message.type === 'user' ? 'ml-2' : 'mr-2'}`}>
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                          message.type === 'user' 
-                            ? 'bg-herbal-600 text-white' 
-                            : 'bg-gradient-to-br from-nature-500 to-earth-600 text-white'
-                        }`}>
-                          {message.type === 'user' ? (
+                      <div
+                        className={`flex-shrink-0 ${message.type === "user" ? "ml-2" : "mr-2"}`}
+                      >
+                        <div
+                          className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                            message.type === "user"
+                              ? "bg-herbal-600 text-white"
+                              : "bg-gradient-to-br from-nature-500 to-earth-600 text-white"
+                          }`}
+                        >
+                          {message.type === "user" ? (
                             <User className="w-4 h-4" />
                           ) : (
                             <Bot className="w-4 h-4" />
                           )}
                         </div>
                       </div>
-                      
+
                       {/* Message */}
-                      <div className={`rounded-2xl px-4 py-3 ${
-                        message.type === 'user'
-                          ? 'bg-herbal-600 text-white rounded-br-md'
-                          : 'bg-muted text-foreground rounded-bl-md'
-                      }`}>
+                      <div
+                        className={`rounded-2xl px-4 py-3 ${
+                          message.type === "user"
+                            ? "bg-herbal-600 text-white rounded-br-md"
+                            : "bg-muted text-foreground rounded-bl-md"
+                        }`}
+                      >
                         <div className="whitespace-pre-wrap text-sm leading-relaxed">
                           {message.content}
                         </div>
-                        <div className={`text-xs mt-2 ${
-                          message.type === 'user' ? 'text-white/70' : 'text-muted-foreground'
-                        }`}>
-                          {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        <div
+                          className={`text-xs mt-2 ${
+                            message.type === "user"
+                              ? "text-white/70"
+                              : "text-muted-foreground"
+                          }`}
+                        >
+                          {message.timestamp.toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
                         </div>
                       </div>
                     </div>
                   </motion.div>
                 ))}
-                
+
                 {isLoading && (
                   <motion.div
                     initial={{ opacity: 0 }}
@@ -299,7 +326,7 @@ User question: ${prompt}`
                     </div>
                   </motion.div>
                 )}
-                
+
                 <div ref={messagesEndRef} />
               </div>
             </ScrollArea>
@@ -343,13 +370,17 @@ User question: ${prompt}`
                   onClick={handleVoiceInput}
                   disabled={isLoading}
                   className={`absolute right-1 top-1 h-8 w-8 p-0 ${
-                    isListening ? 'text-red-500' : 'text-muted-foreground'
+                    isListening ? "text-red-500" : "text-muted-foreground"
                   }`}
                 >
-                  {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+                  {isListening ? (
+                    <MicOff className="w-4 h-4" />
+                  ) : (
+                    <Mic className="w-4 h-4" />
+                  )}
                 </Button>
               </div>
-              
+
               <Button
                 onClick={handleSendMessage}
                 disabled={!input.trim() || isLoading}
@@ -358,21 +389,29 @@ User question: ${prompt}`
               >
                 <Send className="w-4 h-4" />
               </Button>
-              
+
               <Button
                 variant="outline"
                 size="icon"
                 onClick={() => setSpeechEnabled(!speechEnabled)}
-                className={speechEnabled ? 'text-herbal-600' : 'text-muted-foreground'}
+                className={
+                  speechEnabled ? "text-herbal-600" : "text-muted-foreground"
+                }
               >
-                {speechEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+                {speechEnabled ? (
+                  <Volume2 className="w-4 h-4" />
+                ) : (
+                  <VolumeX className="w-4 h-4" />
+                )}
               </Button>
             </div>
-            
+
             <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
               <span>Press Enter to send • Powered by Google AI</span>
               {isListening && (
-                <span className="text-red-500 animate-pulse">🎤 Listening...</span>
+                <span className="text-red-500 animate-pulse">
+                  🎤 Listening...
+                </span>
               )}
             </div>
           </div>
