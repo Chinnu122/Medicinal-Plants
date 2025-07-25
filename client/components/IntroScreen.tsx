@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Leaf, Sparkles, Heart } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Leaf, Sparkles, Heart } from "lucide-react";
 
 interface IntroScreenProps {
   onComplete: () => void;
@@ -66,7 +66,7 @@ export function IntroScreen({ onComplete }: IntroScreenProps) {
               >
                 <div className="w-full h-full border-4 border-herbal-400/20 rounded-full"></div>
               </motion.div>
-              
+
               <motion.div
                 animate={{ rotate: -360 }}
                 transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
@@ -77,15 +77,15 @@ export function IntroScreen({ onComplete }: IntroScreenProps) {
 
               <div className="relative w-32 h-32 mx-auto bg-gradient-to-br from-herbal-500 to-nature-600 rounded-full flex items-center justify-center shadow-2xl">
                 <motion.div
-                  animate={{ 
+                  animate={{
                     scale: [1, 1.1, 1],
-                    rotate: [0, 5, -5, 0]
+                    rotate: [0, 5, -5, 0],
                   }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
                   <Leaf className="w-12 h-12 text-white" />
                 </motion.div>
-                
+
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -94,7 +94,7 @@ export function IntroScreen({ onComplete }: IntroScreenProps) {
                 >
                   <Sparkles className="w-6 h-6 text-yellow-400" />
                 </motion.div>
-                
+
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -132,7 +132,8 @@ export function IntroScreen({ onComplete }: IntroScreenProps) {
               Your AI-Powered Medicinal Plants Guide
             </p>
             <p className="text-lg text-nature-600 dark:text-nature-400">
-              Discover 100+ healing herbs • Affordable wellness • Natural remedies
+              Discover 100+ healing herbs • Affordable wellness • Natural
+              remedies
             </p>
           </motion.div>
         )}

@@ -1,83 +1,96 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { 
-  Leaf, 
-  Search, 
-  MessageCircle, 
-  Star, 
-  TrendingUp, 
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import {
+  Leaf,
+  Search,
+  MessageCircle,
+  Star,
+  TrendingUp,
   ShieldCheck,
   Users,
   ArrowRight,
   Sparkles,
   Heart,
   Brain,
-  Activity
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { medicinalPlants } from '@/data/plants';
+  Activity,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { medicinalPlants } from "@/data/plants";
 
 export default function Index() {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
-  
+
   const featuredPlants = medicinalPlants.slice(0, 6);
-  
+
   const stats = [
-    { label: 'Medicinal Plants', value: '100+', icon: Leaf },
-    { label: 'Happy Users', value: '10K+', icon: Users },
-    { label: 'Success Rate', value: '95%', icon: TrendingUp },
-    { label: 'Expert Verified', value: '100%', icon: ShieldCheck },
+    { label: "Medicinal Plants", value: "100+", icon: Leaf },
+    { label: "Happy Users", value: "10K+", icon: Users },
+    { label: "Success Rate", value: "95%", icon: TrendingUp },
+    { label: "Expert Verified", value: "100%", icon: ShieldCheck },
   ];
 
   const benefits = [
     {
       icon: Heart,
-      title: 'Natural Healing',
-      description: 'Discover the power of nature with time-tested medicinal plants and herbs.',
-      color: 'text-red-500'
+      title: "Natural Healing",
+      description:
+        "Discover the power of nature with time-tested medicinal plants and herbs.",
+      color: "text-red-500",
     },
     {
       icon: Brain,
-      title: 'AI-Powered Guidance',
-      description: 'Get personalized recommendations from our intelligent plant assistant.',
-      color: 'text-blue-500'
+      title: "AI-Powered Guidance",
+      description:
+        "Get personalized recommendations from our intelligent plant assistant.",
+      color: "text-blue-500",
     },
     {
       icon: Activity,
-      title: 'Affordable Wellness',
-      description: 'Access premium natural remedies at minimal costs for everyone.',
-      color: 'text-green-500'
+      title: "Affordable Wellness",
+      description:
+        "Access premium natural remedies at minimal costs for everyone.",
+      color: "text-green-500",
     },
     {
       icon: ShieldCheck,
-      title: 'Expert Verified',
-      description: 'All information is verified by herbalists and medical professionals.',
-      color: 'text-purple-500'
-    }
+      title: "Expert Verified",
+      description:
+        "All information is verified by herbalists and medical professionals.",
+      color: "text-purple-500",
+    },
   ];
 
   const testimonials = [
     {
-      name: 'Sarah Johnson',
-      role: 'Wellness Enthusiast',
-      content: 'HerbWise helped me find affordable natural remedies for my chronic pain. The AI assistant is incredibly helpful!',
-      rating: 5
+      name: "Sarah Johnson",
+      role: "Wellness Enthusiast",
+      content:
+        "HerbWise helped me find affordable natural remedies for my chronic pain. The AI assistant is incredibly helpful!",
+      rating: 5,
     },
     {
-      name: 'Dr. Michael Chen',
-      role: 'Herbalist',
-      content: 'The most comprehensive medicinal plant database I\'ve ever used. Perfect for both beginners and professionals.',
-      rating: 5
+      name: "Dr. Michael Chen",
+      role: "Herbalist",
+      content:
+        "The most comprehensive medicinal plant database I've ever used. Perfect for both beginners and professionals.",
+      rating: 5,
     },
     {
-      name: 'Emma Rodriguez',
-      role: 'Naturopath',
-      content: 'Amazing resource! The cost-effective recommendations have helped many of my patients access natural healing.',
-      rating: 5
-    }
+      name: "Emma Rodriguez",
+      role: "Naturopath",
+      content:
+        "Amazing resource! The cost-effective recommendations have helped many of my patients access natural healing.",
+      rating: 5,
+    },
   ];
 
   useEffect(() => {
@@ -92,9 +105,13 @@ export default function Index() {
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-herbal-50 via-nature-100 to-earth-50 dark:from-herbal-900 dark:via-nature-800 dark:to-earth-800">
         <div className="absolute inset-0">
-          <div className={"absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23059669\" fill-opacity=\"0.05\"%3E%3Ccircle cx=\"30\" cy=\"30\" r=\"2\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-40"}></div>
+          <div
+            className={
+              'absolute inset-0 bg-[url(\'data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23059669" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\')] opacity-40'
+            }
+          ></div>
         </div>
-        
+
         <div className="relative container mx-auto px-6 py-20 md:py-32">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -109,7 +126,7 @@ export default function Index() {
                   AI-Powered Natural Healing
                 </span>
               </div>
-              
+
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
                 <span className="bg-gradient-to-r from-herbal-600 via-nature-700 to-earth-600 bg-clip-text text-transparent">
                   Discover Nature's
@@ -117,19 +134,25 @@ export default function Index() {
                 <br />
                 <span className="text-foreground">Medicine Cabinet</span>
               </h1>
-              
+
               <p className="text-xl text-muted-foreground mb-8 max-w-2xl">
-                Access 100+ medicinal plants with detailed guides, affordable sourcing, and AI-powered recommendations for natural wellness solutions.
+                Access 100+ medicinal plants with detailed guides, affordable
+                sourcing, and AI-powered recommendations for natural wellness
+                solutions.
               </p>
-              
+
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Button asChild size="lg" className="bg-herbal-600 hover:bg-herbal-700">
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-herbal-600 hover:bg-herbal-700"
+                >
                   <Link to="/plants">
                     <Leaf className="w-5 h-5 mr-2" />
                     Explore Plants
                   </Link>
                 </Button>
-                
+
                 <Button asChild variant="outline" size="lg">
                   <Link to="/assistant">
                     <MessageCircle className="w-5 h-5 mr-2" />
@@ -138,7 +161,7 @@ export default function Index() {
                 </Button>
               </div>
             </motion.div>
-            
+
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -160,7 +183,9 @@ export default function Index() {
                       className="w-full h-24 object-cover rounded-lg mb-2"
                     />
                     <h3 className="font-semibold text-sm">{plant.name}</h3>
-                    <p className="text-xs text-muted-foreground">{plant.category[0]}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {plant.category[0]}
+                    </p>
                   </motion.div>
                 ))}
               </div>
@@ -186,8 +211,12 @@ export default function Index() {
                   <div className="inline-flex items-center justify-center w-12 h-12 bg-herbal-100 dark:bg-herbal-800 rounded-lg mb-4">
                     <Icon className="w-6 h-6 text-herbal-600 dark:text-herbal-400" />
                   </div>
-                  <div className="text-2xl md:text-3xl font-bold text-foreground">{stat.value}</div>
-                  <div className="text-sm text-muted-foreground">{stat.label}</div>
+                  <div className="text-2xl md:text-3xl font-bold text-foreground">
+                    {stat.value}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    {stat.label}
+                  </div>
                 </motion.div>
               );
             })}
@@ -208,7 +237,8 @@ export default function Index() {
               Why Choose <span className="text-herbal-600">HerbWise</span>?
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Combining ancient wisdom with modern technology for accessible natural healing.
+              Combining ancient wisdom with modern technology for accessible
+              natural healing.
             </p>
           </motion.div>
 
@@ -224,7 +254,9 @@ export default function Index() {
                 >
                   <Card className="h-full text-center border-0 shadow-lg hover:shadow-xl transition-shadow">
                     <CardHeader>
-                      <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-background mx-auto mb-4 ${benefit.color}`}>
+                      <div
+                        className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-background mx-auto mb-4 ${benefit.color}`}
+                      >
                         <Icon className="w-8 h-8" />
                       </div>
                       <CardTitle className="text-xl">{benefit.title}</CardTitle>
@@ -255,7 +287,8 @@ export default function Index() {
               Popular Medicinal Plants
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-              Discover some of our most effective and affordable natural remedies.
+              Discover some of our most effective and affordable natural
+              remedies.
             </p>
           </motion.div>
 
@@ -297,7 +330,11 @@ export default function Index() {
                     </p>
                     <div className="flex flex-wrap gap-2 mb-4">
                       {plant.benefits.slice(0, 3).map((benefit) => (
-                        <Badge key={benefit} variant="secondary" className="text-xs">
+                        <Badge
+                          key={benefit}
+                          variant="secondary"
+                          className="text-xs"
+                        >
                           {benefit}
                         </Badge>
                       ))}
@@ -352,16 +389,25 @@ export default function Index() {
               <Card className="border-0 shadow-lg">
                 <CardContent className="pt-8">
                   <div className="flex justify-center mb-4">
-                    {[...Array(testimonials[currentTestimonial].rating)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 text-yellow-500 fill-current" />
-                    ))}
+                    {[...Array(testimonials[currentTestimonial].rating)].map(
+                      (_, i) => (
+                        <Star
+                          key={i}
+                          className="w-5 h-5 text-yellow-500 fill-current"
+                        />
+                      ),
+                    )}
                   </div>
                   <blockquote className="text-xl italic mb-6">
                     "{testimonials[currentTestimonial].content}"
                   </blockquote>
                   <div>
-                    <div className="font-semibold">{testimonials[currentTestimonial].name}</div>
-                    <div className="text-muted-foreground">{testimonials[currentTestimonial].role}</div>
+                    <div className="font-semibold">
+                      {testimonials[currentTestimonial].name}
+                    </div>
+                    <div className="text-muted-foreground">
+                      {testimonials[currentTestimonial].role}
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -373,7 +419,7 @@ export default function Index() {
                   key={index}
                   onClick={() => setCurrentTestimonial(index)}
                   className={`w-3 h-3 rounded-full transition-colors ${
-                    index === currentTestimonial ? 'bg-herbal-600' : 'bg-muted'
+                    index === currentTestimonial ? "bg-herbal-600" : "bg-muted"
                   }`}
                 />
               ))}
@@ -394,8 +440,8 @@ export default function Index() {
               Start Your Natural Healing Journey
             </h2>
             <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-              Get instant access to our AI assistant and comprehensive plant database. 
-              Begin your path to affordable, natural wellness today.
+              Get instant access to our AI assistant and comprehensive plant
+              database. Begin your path to affordable, natural wellness today.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg" variant="secondary">
@@ -404,7 +450,12 @@ export default function Index() {
                   Find Your Plant
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-herbal-600">
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="bg-transparent border-white text-white hover:bg-white hover:text-herbal-600"
+              >
                 <Link to="/assistant">
                   <MessageCircle className="w-5 h-5 mr-2" />
                   Ask AI Assistant
