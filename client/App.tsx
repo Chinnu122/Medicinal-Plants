@@ -1,8 +1,15 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./contexts/AuthContext";
 import { IntroScreen } from "./components/IntroScreen";
 import { Layout } from "./components/Layout";
 import Index from "./pages/Index";
+import Plants from "./pages/Plants";
+import PlantDetail from "./pages/PlantDetail";
+import AIAssistant from "./pages/AIAssistant";
+import Settings from "./pages/Settings";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
 import NotFound from "./pages/NotFound";
 import "./global.css";
 
@@ -45,29 +52,21 @@ export default function App() {
   }
 
   return (
-    <BrowserRouter>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route
-            path="/plants"
-            element={<PlaceholderPage title="Medicinal Plants Database" />}
-          />
-          <Route
-            path="/search"
-            element={<PlaceholderPage title="Plant Search" />}
-          />
-          <Route
-            path="/assistant"
-            element={<PlaceholderPage title="AI Assistant" />}
-          />
-          <Route
-            path="/settings"
-            element={<PlaceholderPage title="Settings" />}
-          />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Layout>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/plants" element={<Plants />} />
+            <Route path="/plants/:id" element={<PlantDetail />} />
+            <Route path="/assistant" element={<AIAssistant />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Layout>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
