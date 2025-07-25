@@ -9,51 +9,78 @@
    * A different format will require also updating the theme in tailwind.config.ts.
   */
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 120 20% 98%;
+    --foreground: 140 50% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 140 50% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 140 50% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 130 60% 45%;
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 120 15% 95%;
+    --secondary-foreground: 140 50% 15%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 120 10% 96%;
+    --muted-foreground: 140 20% 50%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 110 40% 92%;
+    --accent-foreground: 140 50% 15%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 120 20% 88%;
+    --input: 120 20% 88%;
+    --ring: 130 60% 45%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
+    --sidebar-background: 120 15% 97%;
+    --sidebar-foreground: 140 40% 25%;
+    --sidebar-primary: 130 60% 45%;
     --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 120 20% 92%;
+    --sidebar-accent-foreground: 140 50% 15%;
+    --sidebar-border: 120 20% 88%;
+    --sidebar-ring: 130 60% 45%;
 
-    --sidebar-accent: 240 4.8% 95.9%;
+    /* Medicinal plants brand colors */
+    --herbal-50: 120 60% 95%;
+    --herbal-100: 120 55% 90%;
+    --herbal-200: 120 50% 80%;
+    --herbal-300: 120 45% 70%;
+    --herbal-400: 120 50% 60%;
+    --herbal-500: 120 55% 50%;
+    --herbal-600: 120 60% 40%;
+    --herbal-700: 120 65% 30%;
+    --herbal-800: 120 70% 20%;
+    --herbal-900: 120 75% 10%;
 
-    --sidebar-accent-foreground: 240 5.9% 10%;
+    --nature-50: 110 40% 95%;
+    --nature-100: 110 35% 90%;
+    --nature-200: 110 30% 80%;
+    --nature-300: 110 35% 70%;
+    --nature-400: 110 40% 60%;
+    --nature-500: 110 45% 50%;
+    --nature-600: 110 50% 40%;
+    --nature-700: 110 55% 30%;
+    --nature-800: 110 60% 20%;
+    --nature-900: 110 65% 10%;
 
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --earth-50: 30 20% 95%;
+    --earth-100: 30 18% 88%;
+    --earth-200: 30 16% 78%;
+    --earth-300: 30 18% 68%;
+    --earth-400: 30 20% 58%;
+    --earth-500: 30 22% 48%;
+    --earth-600: 30 25% 38%;
+    --earth-700: 30 28% 28%;
+    --earth-800: 30 30% 18%;
+    --earth-900: 30 35% 10%;
   }
 
   .dark {
