@@ -2,16 +2,25 @@ import { ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   Leaf,
-  Search,
   MessageCircle,
   BookOpen,
   Settings,
   Sun,
   Moon,
+  LogOut,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 interface LayoutProps {
   children: ReactNode;
@@ -33,7 +42,6 @@ export function Layout({ children }: LayoutProps) {
   const navigation = [
     { name: "Home", href: "/", icon: Leaf },
     { name: "Plants", href: "/plants", icon: BookOpen },
-    { name: "Search", href: "/search", icon: Search },
     { name: "AI Assistant", href: "/assistant", icon: MessageCircle },
     { name: "Settings", href: "/settings", icon: Settings },
   ];
@@ -65,7 +73,7 @@ export function Layout({ children }: LayoutProps) {
                     "flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                     location.pathname === item.href
                       ? "bg-herbal-100 text-herbal-700 dark:bg-herbal-800 dark:text-herbal-200"
-                      : "text-muted-foreground hover:text-foreground hover:bg-accent",
+                      : "text-muted-foreground hover:text-foreground hover:bg-accent"
                   )}
                 >
                   <Icon className="w-4 h-4" />
@@ -137,11 +145,13 @@ export function Layout({ children }: LayoutProps) {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1">{children}</main>
+      <main className="flex-1">
+        {children}
+      </main>
 
       {/* Mobile Navigation */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur border-t border-border/40">
-        <div className="grid grid-cols-5 h-16">
+        <div className="grid grid-cols-4 h-16">
           {navigation.map((item) => {
             const Icon = item.icon;
             return (
@@ -152,7 +162,7 @@ export function Layout({ children }: LayoutProps) {
                   "flex flex-col items-center justify-center space-y-1 text-xs transition-colors",
                   location.pathname === item.href
                     ? "text-herbal-600 dark:text-herbal-400"
-                    : "text-muted-foreground",
+                    : "text-muted-foreground"
                 )}
               >
                 <Icon className="w-5 h-5" />
