@@ -523,6 +523,7 @@ export const additionalPlants: MedicinalPlant[] = [
   // For demo purposes, showing the structure with representative examples
 ];
 
+// Import extended plants
 import { extendedPlants, generateAdditionalPlants } from "./extendedPlants";
 
 export const allPlants = [
