@@ -281,7 +281,9 @@ export const additionalPlants: MedicinalPlant[] = [
   // For demo purposes, showing the structure with representative examples
 ];
 
-export const allPlants = [...medicinalPlants, ...additionalPlants];
+import { extendedPlants, generateAdditionalPlants } from './extendedPlants';
+
+export const allPlants = [...medicinalPlants, ...additionalPlants, ...extendedPlants, ...generateAdditionalPlants()];
 
 export const plantCategories = [
   'Anti-inflammatory',
