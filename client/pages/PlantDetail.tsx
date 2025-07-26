@@ -346,6 +346,83 @@ export default function PlantDetail() {
               </CardContent>
             </Card>
 
+            {/* Add to Cart */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Add to Cart</CardTitle>
+                <CardDescription>
+                  Choose your preferred form and quantity
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label htmlFor="form">Form</Label>
+                  <Select value={selectedForm} onValueChange={(value: 'fresh' | 'dried' | 'supplement') => setSelectedForm(value)}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="fresh">Fresh - {plant.cost.fresh}</SelectItem>
+                      <SelectItem value="dried">Dried - {plant.cost.dried}</SelectItem>
+                      <SelectItem value="supplement">Supplement - {plant.cost.supplement}</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label htmlFor="quantity">Quantity</Label>
+                  <div className="flex items-center space-x-2 mt-1">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="w-8 h-8 p-0"
+                    >
+                      <Minus className="w-3 h-3" />
+                    </Button>
+                    <span className="w-12 text-center font-medium">{quantity}</span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="w-8 h-8 p-0"
+                    >
+                      <Plus className="w-3 h-3" />
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="border-t pt-4">
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="font-medium">Total:</span>
+                    <span className="text-xl font-bold text-herbal-600">
+                      ${(currentPrice * quantity).toFixed(2)}
+                    </span>
+                  </div>
+
+                  <Button
+                    onClick={handleAddToCart}
+                    disabled={isAdding || showSuccess}
+                    className="w-full bg-herbal-600 hover:bg-herbal-700"
+                  >
+                    {showSuccess ? (
+                      <>
+                        <Check className="w-4 h-4 mr-2" />
+                        Added to Cart!
+                      </>
+                    ) : isAdding ? (
+                      'Adding...'
+                    ) : (
+                      <>
+                        <ShoppingCart className="w-4 h-4 mr-2" />
+                        Add to Cart
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Quick Actions */}
             <Card>
               <CardHeader>
@@ -356,9 +433,19 @@ export default function PlantDetail() {
                   <BookmarkPlus className="w-4 h-4 mr-2" />
                   Add to My Garden
                 </Button>
-                <Button className="w-full bg-herbal-600 hover:bg-herbal-700">
-                  Ask AI Assistant
+                <Button className="w-full" variant="outline" asChild>
+                  <Link to="/assistant">
+                    Ask AI Assistant
+                  </Link>
                 </Button>
+                {user && (
+                  <Button className="w-full" variant="outline" asChild>
+                    <Link to="/cart">
+                      <ShoppingCart className="w-4 h-4 mr-2" />
+                      View Cart ({getCartItemsCount()})
+                    </Link>
+                  </Button>
+                )}
               </CardContent>
             </Card>
           </div>
