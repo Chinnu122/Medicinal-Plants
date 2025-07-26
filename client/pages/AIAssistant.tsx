@@ -91,7 +91,10 @@ What would you like to know about medicinal plants today?`,
   const getFallbackResponse = (prompt: string): string | null => {
     const lowercasePrompt = prompt.toLowerCase();
 
-    if (lowercasePrompt.includes('turmeric') && lowercasePrompt.includes('inflammation')) {
+    if (
+      lowercasePrompt.includes("turmeric") &&
+      lowercasePrompt.includes("inflammation")
+    ) {
       return `🌿 **Turmeric for Inflammation**
 
 **Preparation Methods:**
@@ -108,7 +111,11 @@ What would you like to know about medicinal plants today?`,
 💡 *Find more details in our Plants Database → Turmeric section*`;
     }
 
-    if (lowercasePrompt.includes('ginger') && (lowercasePrompt.includes('nausea') || lowercasePrompt.includes('digestive'))) {
+    if (
+      lowercasePrompt.includes("ginger") &&
+      (lowercasePrompt.includes("nausea") ||
+        lowercasePrompt.includes("digestive"))
+    ) {
       return `🌿 **Ginger for Digestive Health**
 
 **Preparation Methods:**
@@ -125,7 +132,10 @@ What would you like to know about medicinal plants today?`,
 💡 *Explore our complete Ginger guide in the Plants section*`;
     }
 
-    if (lowercasePrompt.includes('chamomile') || (lowercasePrompt.includes('sleep') && lowercasePrompt.includes('tea'))) {
+    if (
+      lowercasePrompt.includes("chamomile") ||
+      (lowercasePrompt.includes("sleep") && lowercasePrompt.includes("tea"))
+    ) {
       return `🌿 **Chamomile for Sleep & Relaxation**
 
 **Preparation**:
@@ -139,7 +149,10 @@ What would you like to know about medicinal plants today?`,
 💡 *Visit our Plants Database for more calming herbs like Lavender and Valerian Root*`;
     }
 
-    if (lowercasePrompt.includes('echinacea') || (lowercasePrompt.includes('immune') && lowercasePrompt.includes('system'))) {
+    if (
+      lowercasePrompt.includes("echinacea") ||
+      (lowercasePrompt.includes("immune") && lowercasePrompt.includes("system"))
+    ) {
       return `🌿 **Echinacea for Immune Support**
 
 **Preparation**:
@@ -154,7 +167,10 @@ What would you like to know about medicinal plants today?`,
 💡 *Check our Plants section for more immune-boosting herbs*`;
     }
 
-    if (lowercasePrompt.includes('stress') || lowercasePrompt.includes('anxiety')) {
+    if (
+      lowercasePrompt.includes("stress") ||
+      lowercasePrompt.includes("anxiety")
+    ) {
       return `🌿 **Natural Herbs for Stress & Anxiety**
 
 **Top Recommendations**:
@@ -173,7 +189,10 @@ What would you like to know about medicinal plants today?`,
     return null;
   };
 
-  const callGoogleAI = async (prompt: string, retryCount = 0): Promise<string> => {
+  const callGoogleAI = async (
+    prompt: string,
+    retryCount = 0,
+  ): Promise<string> => {
     const maxRetries = 3;
     const baseDelay = 1000; // 1 second
 
@@ -220,10 +239,17 @@ User question: ${prompt}`,
         const errorData = await response.json().catch(() => ({}));
 
         // Check if it's a quota exceeded error
-        if (errorData.error && errorData.error.message && errorData.error.message.includes('quota')) {
+        if (
+          errorData.error &&
+          errorData.error.message &&
+          errorData.error.message.includes("quota")
+        ) {
           // Try to provide a fallback response for common questions
           if (fallback) {
-            return fallback + `\n\n*Note: AI service is temporarily limited, but I can still help with common plant questions!*`;
+            return (
+              fallback +
+              `\n\n*Note: AI service is temporarily limited, but I can still help with common plant questions!*`
+            );
           }
 
           return `🚫 **AI Service Temporarily Unavailable**
@@ -246,8 +272,10 @@ The AI service will be restored within 24 hours. Thank you for your patience! �
         // Regular rate limiting - try retry logic
         if (retryCount < maxRetries) {
           const delay = baseDelay * Math.pow(2, retryCount);
-          console.log(`Rate limited. Retrying in ${delay}ms (attempt ${retryCount + 1}/${maxRetries})`);
-          await new Promise(resolve => setTimeout(resolve, delay));
+          console.log(
+            `Rate limited. Retrying in ${delay}ms (attempt ${retryCount + 1}/${maxRetries})`,
+          );
+          await new Promise((resolve) => setTimeout(resolve, delay));
           return callGoogleAI(prompt, retryCount + 1);
         } else {
           return "I'm currently experiencing high demand! 🌿 Please wait a few minutes before asking another question. In the meantime, feel free to browse our medicinal plants database for information about specific herbs and remedies.";
@@ -262,19 +290,31 @@ The AI service will be restored within 24 hours. Thank you for your patience! �
       // Only call .json() once and store the result
       const data = await response.json();
 
-      if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
+      if (
+        data.candidates &&
+        data.candidates[0] &&
+        data.candidates[0].content &&
+        data.candidates[0].content.parts &&
+        data.candidates[0].content.parts[0]
+      ) {
         return data.candidates[0].content.parts[0].text;
       } else if (data.error) {
-        throw new Error(`API Error: ${data.error.message || 'Unknown error'}`);
+        throw new Error(`API Error: ${data.error.message || "Unknown error"}`);
       } else {
         throw new Error("Invalid response structure from AI");
       }
     } catch (error) {
       console.error("AI API Error:", error);
       if (error instanceof Error) {
-        if (error.message.includes('fetch') || error.message.includes('network')) {
+        if (
+          error.message.includes("fetch") ||
+          error.message.includes("network")
+        ) {
           return "I'm having trouble connecting to the AI service. Please check your internet connection and try again.";
-        } else if (error.message.includes('HTTP error! status: 4') || error.message.includes('HTTP error! status: 5')) {
+        } else if (
+          error.message.includes("HTTP error! status: 4") ||
+          error.message.includes("HTTP error! status: 5")
+        ) {
           return "The AI service is temporarily unavailable. Please try again in a moment.";
         }
       }
@@ -301,11 +341,13 @@ The AI service will be restored within 24 hours. Thank you for your patience! �
     const timeSinceLastRequest = now - lastRequestTime;
 
     if (timeSinceLastRequest < MIN_REQUEST_INTERVAL) {
-      const waitTime = Math.ceil((MIN_REQUEST_INTERVAL - timeSinceLastRequest) / 1000);
+      const waitTime = Math.ceil(
+        (MIN_REQUEST_INTERVAL - timeSinceLastRequest) / 1000,
+      );
       const warningMessage: Message = {
         id: Date.now().toString(),
         type: "assistant",
-        content: `Please wait ${waitTime} more second${waitTime > 1 ? 's' : ''} before asking another question. This helps me provide better responses and prevents rate limiting! 🌿
+        content: `Please wait ${waitTime} more second${waitTime > 1 ? "s" : ""} before asking another question. This helps me provide better responses and prevents rate limiting! 🌿
 
 While you wait, you can:
 • Browse our Plants Database for detailed herb information
