@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import { CartProvider } from "./contexts/CartContext";
+import { OffersProvider } from "./contexts/OffersContext";
 import { IntroScreen } from "./components/IntroScreen";
 import { Layout } from "./components/Layout";
 import Index from "./pages/Index";
 import Plants from "./pages/Plants";
 import PlantDetail from "./pages/PlantDetail";
+import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
+import OrderConfirmation from "./pages/OrderConfirmation";
+import Orders from "./pages/Orders";
 import AIAssistant from "./pages/AIAssistant";
 import Settings from "./pages/Settings";
 import SignIn from "./pages/SignIn";
@@ -53,20 +59,29 @@ export default function App() {
 
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/plants" element={<Plants />} />
-            <Route path="/plants/:id" element={<PlantDetail />} />
-            <Route path="/assistant" element={<AIAssistant />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Layout>
-      </BrowserRouter>
+      <CartProvider>
+        <OffersProvider>
+          <BrowserRouter>
+            <Layout>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/plants" element={<Plants />} />
+                <Route path="/plants/:id" element={<PlantDetail />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />
+                <Route path="/orders" element={<Orders />} />
+                <Route path="/orders/:orderId" element={<Orders />} />
+                <Route path="/assistant" element={<AIAssistant />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/signin" element={<SignIn />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Layout>
+          </BrowserRouter>
+        </OffersProvider>
+      </CartProvider>
     </AuthProvider>
   );
 }

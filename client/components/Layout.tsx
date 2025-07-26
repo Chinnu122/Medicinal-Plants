@@ -8,11 +8,13 @@ import {
   Sun,
   Moon,
   LogOut,
+  ShoppingCart,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCart } from "@/contexts/CartContext";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,6 +32,7 @@ export function Layout({ children }: LayoutProps) {
   const location = useLocation();
   const [darkMode, setDarkMode] = useState(false);
   const { user, logout } = useAuth();
+  const { getCartItemsCount } = useCart();
 
   useEffect(() => {
     if (darkMode) {
@@ -45,6 +48,8 @@ export function Layout({ children }: LayoutProps) {
     { name: "AI Assistant", href: "/assistant", icon: MessageCircle },
     { name: "Settings", href: "/settings", icon: Settings },
   ];
+
+  const cartItemsCount = getCartItemsCount();
 
   return (
     <div className="min-h-screen bg-background">
@@ -83,8 +88,25 @@ export function Layout({ children }: LayoutProps) {
             })}
           </nav>
 
-          {/* Right Side - Theme Toggle & User Menu */}
+          {/* Right Side - Cart, Theme Toggle & User Menu */}
           <div className="flex items-center space-x-2">
+            {/* Cart Button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              asChild
+              className="relative w-9 h-9 p-0"
+            >
+              <Link to="/cart">
+                <ShoppingCart className="w-4 h-4" />
+                {cartItemsCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-herbal-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
+                    {cartItemsCount > 99 ? '99+' : cartItemsCount}
+                  </span>
+                )}
+              </Link>
+            </Button>
+
             <Button
               variant="ghost"
               size="sm"
