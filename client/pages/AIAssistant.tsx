@@ -87,9 +87,98 @@ What would you like to know about medicinal plants today?`,
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // Fallback responses for common questions when AI is unavailable
+  const getFallbackResponse = (prompt: string): string | null => {
+    const lowercasePrompt = prompt.toLowerCase();
+
+    if (lowercasePrompt.includes('turmeric') && lowercasePrompt.includes('inflammation')) {
+      return `🌿 **Turmeric for Inflammation**
+
+**Preparation Methods:**
+1. **Golden Milk**: Mix 1 tsp turmeric powder + pinch of black pepper + warm milk
+2. **Fresh Root Tea**: Slice fresh turmeric root, boil for 10 minutes
+3. **Turmeric Paste**: Mix turmeric powder with water, apply topically
+
+**Dosage**: 1-3 grams daily (about 1/2 to 1 teaspoon)
+
+**Benefits**: Anti-inflammatory, antioxidant, pain relief
+
+**Safety**: May interact with blood thinners. Consult your doctor if taking medications.
+
+💡 *Find more details in our Plants Database → Turmeric section*`;
+    }
+
+    if (lowercasePrompt.includes('ginger') && (lowercasePrompt.includes('nausea') || lowercasePrompt.includes('digestive'))) {
+      return `🌿 **Ginger for Digestive Health**
+
+**Preparation Methods:**
+1. **Fresh Ginger Tea**: Slice 1-inch fresh ginger, steep in hot water 10 mins
+2. **Ginger Juice**: Grate fresh ginger, strain juice, mix with honey
+3. **Dried Ginger**: 1/4 to 1/2 teaspoon powder in warm water
+
+**Benefits**: Anti-nausea, digestive aid, anti-inflammatory
+
+**Uses**: Motion sickness, morning sickness, indigestion
+
+**Safety**: Avoid large amounts during pregnancy. May interact with blood thinners.
+
+💡 *Explore our complete Ginger guide in the Plants section*`;
+    }
+
+    if (lowercasePrompt.includes('chamomile') || (lowercasePrompt.includes('sleep') && lowercasePrompt.includes('tea'))) {
+      return `🌿 **Chamomile for Sleep & Relaxation**
+
+**Preparation**:
+• **Tea**: 1 tsp dried flowers in 1 cup hot water, steep 5-10 minutes
+• **Evening dose**: Drink 30 minutes before bedtime
+
+**Benefits**: Calming, sleep aid, anti-inflammatory, digestive support
+
+**Safety**: Generally safe. May cause allergic reactions in people sensitive to ragweed.
+
+💡 *Visit our Plants Database for more calming herbs like Lavender and Valerian Root*`;
+    }
+
+    if (lowercasePrompt.includes('echinacea') || (lowercasePrompt.includes('immune') && lowercasePrompt.includes('system'))) {
+      return `🌿 **Echinacea for Immune Support**
+
+**Preparation**:
+• **Tea**: 1-2 tsp dried herb, steep 10 minutes
+• **Tincture**: 2-3 mL, 3 times daily
+• **Best taken**: At first sign of cold symptoms
+
+**Benefits**: Immune support, antiviral, reduces cold duration
+
+**Safety**: Avoid with autoimmune conditions. Don't use for more than 8 weeks continuously.
+
+💡 *Check our Plants section for more immune-boosting herbs*`;
+    }
+
+    if (lowercasePrompt.includes('stress') || lowercasePrompt.includes('anxiety')) {
+      return `🌿 **Natural Herbs for Stress & Anxiety**
+
+**Top Recommendations**:
+1. **Chamomile**: Gentle, safe for daily use
+2. **Lavender**: Aromatherapy or tea
+3. **Ashwagandha**: Adaptogenic herb for chronic stress
+4. **Lemon Balm**: Calming, good for nervous tension
+
+**Quick Stress Relief Tea**: Mix chamomile + lemon balm, steep 10 minutes
+
+**Safety**: Always consult healthcare provider for severe anxiety. Start with small amounts.
+
+💡 *Browse our Plants Database for detailed preparation guides*`;
+    }
+
+    return null;
+  };
+
   const callGoogleAI = async (prompt: string, retryCount = 0): Promise<string> => {
     const maxRetries = 3;
     const baseDelay = 1000; // 1 second
+
+    // Try fallback response first if AI is unavailable
+    const fallback = getFallbackResponse(prompt);
 
     try {
       const response = await fetch(
@@ -126,15 +215,41 @@ User question: ${prompt}`,
         },
       );
 
-      // Handle rate limiting (429) with retry logic
+      // Handle rate limiting (429) and quota exceeded
       if (response.status === 429) {
+        const errorData = await response.json().catch(() => ({}));
+
+        // Check if it's a quota exceeded error
+        if (errorData.error && errorData.error.message && errorData.error.message.includes('quota')) {
+          // Try to provide a fallback response for common questions
+          if (fallback) {
+            return fallback + `\n\n*Note: AI service is temporarily limited, but I can still help with common plant questions!*`;
+          }
+
+          return `🚫 **AI Service Temporarily Unavailable**
+
+The Google AI service has reached its daily usage limit. Here's what you can do:
+
+🌿 **Browse Our Plant Database**: Visit the **Plants** section to explore 100+ medicinal herbs with detailed information about benefits, preparation methods, and costs.
+
+📚 **Search Specific Plants**: Use our search feature to find plants for specific health conditions like:
+• Turmeric for inflammation
+• Chamomile for sleep and anxiety
+• Ginger for digestive issues
+• Echinacea for immune support
+
+💡 **Plant Preparation Guide**: Each plant page includes step-by-step preparation instructions and safety precautions.
+
+The AI service will be restored within 24 hours. Thank you for your patience! 🙏`;
+        }
+
+        // Regular rate limiting - try retry logic
         if (retryCount < maxRetries) {
-          const delay = baseDelay * Math.pow(2, retryCount); // Exponential backoff
+          const delay = baseDelay * Math.pow(2, retryCount);
           console.log(`Rate limited. Retrying in ${delay}ms (attempt ${retryCount + 1}/${maxRetries})`);
           await new Promise(resolve => setTimeout(resolve, delay));
           return callGoogleAI(prompt, retryCount + 1);
         } else {
-          // Return friendly message instead of throwing error
           return "I'm currently experiencing high demand! 🌿 Please wait a few minutes before asking another question. In the meantime, feel free to browse our medicinal plants database for information about specific herbs and remedies.";
         }
       }
