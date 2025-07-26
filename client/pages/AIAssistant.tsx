@@ -48,8 +48,11 @@ What would you like to know about medicinal plants today?`,
   const [isLoading, setIsLoading] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [speechEnabled, setSpeechEnabled] = useState(true);
+  const [lastRequestTime, setLastRequestTime] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
+
+  const MIN_REQUEST_INTERVAL = 2000; // 2 seconds between requests
 
   // Speech recognition
   const recognition = useRef<SpeechRecognition | null>(null);
@@ -84,7 +87,10 @@ What would you like to know about medicinal plants today?`,
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const callGoogleAI = async (prompt: string): Promise<string> => {
+  const callGoogleAI = async (prompt: string, retryCount = 0): Promise<string> => {
+    const maxRetries = 3;
+    const baseDelay = 1000; // 1 second
+
     try {
       const response = await fetch(
         "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=AIzaSyBnaIQHdz6VXAfWL1B5wEny1dGzEdat9U0",
@@ -120,6 +126,18 @@ User question: ${prompt}`,
         },
       );
 
+      // Handle rate limiting (429) with retry logic
+      if (response.status === 429) {
+        if (retryCount < maxRetries) {
+          const delay = baseDelay * Math.pow(2, retryCount); // Exponential backoff
+          console.log(`Rate limited. Retrying in ${delay}ms (attempt ${retryCount + 1}/${maxRetries})`);
+          await new Promise(resolve => setTimeout(resolve, delay));
+          return callGoogleAI(prompt, retryCount + 1);
+        } else {
+          throw new Error("Rate limit exceeded. Please wait a moment before asking another question.");
+        }
+      }
+
       // Check if response is ok before parsing
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -138,8 +156,12 @@ User question: ${prompt}`,
     } catch (error) {
       console.error("AI API Error:", error);
       if (error instanceof Error) {
-        if (error.message.includes('fetch')) {
+        if (error.message.includes('Rate limit exceeded')) {
+          return "I'm receiving too many requests right now. Please wait a moment before asking another question. This helps me provide better responses to everyone! 🌿";
+        } else if (error.message.includes('fetch')) {
           return "I'm having trouble connecting to the AI service. Please check your internet connection and try again.";
+        } else if (error.message.includes('HTTP error! status: 429')) {
+          return "I'm currently busy helping other users. Please wait a few seconds and try again! 🙏";
         } else if (error.message.includes('HTTP error')) {
           return "The AI service is temporarily unavailable. Please try again in a moment.";
         }
