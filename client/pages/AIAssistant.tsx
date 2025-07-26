@@ -182,7 +182,7 @@ What would you like to know about medicinal plants today?`,
 
     try {
       const response = await fetch(
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=AIzaSyBnaIQHdz6VXAfWL1B5wEny1dGzEdat9U0",
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=AIzaSyBPqA6KHQi9cIczRKtoO86WCkdhmf0t6TU",
         {
           method: "POST",
           headers: {
