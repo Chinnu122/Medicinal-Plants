@@ -120,16 +120,31 @@ User question: ${prompt}`,
         },
       );
 
+      // Check if response is ok before parsing
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Only call .json() once and store the result
       const data = await response.json();
 
-      if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+      if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
         return data.candidates[0].content.parts[0].text;
+      } else if (data.error) {
+        throw new Error(`API Error: ${data.error.message || 'Unknown error'}`);
       } else {
-        throw new Error("Invalid response from AI");
+        throw new Error("Invalid response structure from AI");
       }
     } catch (error) {
       console.error("AI API Error:", error);
-      return "I apologize, but I'm having trouble connecting to my knowledge base right now. Please try again in a moment, or feel free to browse our medicinal plants database for information.";
+      if (error instanceof Error) {
+        if (error.message.includes('fetch')) {
+          return "I'm having trouble connecting to the AI service. Please check your internet connection and try again.";
+        } else if (error.message.includes('HTTP error')) {
+          return "The AI service is temporarily unavailable. Please try again in a moment.";
+        }
+      }
+      return "I apologize, but I'm having trouble processing your request right now. Please try again in a moment, or feel free to browse our medicinal plants database for information.";
     }
   };
 
