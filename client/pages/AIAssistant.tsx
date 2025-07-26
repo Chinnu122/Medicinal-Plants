@@ -52,7 +52,7 @@ What would you like to know about medicinal plants today?`,
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
 
-  const MIN_REQUEST_INTERVAL = 2000; // 2 seconds between requests
+  const MIN_REQUEST_INTERVAL = 5000; // 5 seconds between requests to prevent rate limiting
 
   // Speech recognition
   const recognition = useRef<SpeechRecognition | null>(null);
@@ -134,7 +134,8 @@ User question: ${prompt}`,
           await new Promise(resolve => setTimeout(resolve, delay));
           return callGoogleAI(prompt, retryCount + 1);
         } else {
-          throw new Error("Rate limit exceeded. Please wait a moment before asking another question.");
+          // Return friendly message instead of throwing error
+          return "I'm currently experiencing high demand! 🌿 Please wait a few minutes before asking another question. In the meantime, feel free to browse our medicinal plants database for information about specific herbs and remedies.";
         }
       }
 
@@ -156,13 +157,9 @@ User question: ${prompt}`,
     } catch (error) {
       console.error("AI API Error:", error);
       if (error instanceof Error) {
-        if (error.message.includes('Rate limit exceeded')) {
-          return "I'm receiving too many requests right now. Please wait a moment before asking another question. This helps me provide better responses to everyone! 🌿";
-        } else if (error.message.includes('fetch')) {
+        if (error.message.includes('fetch') || error.message.includes('network')) {
           return "I'm having trouble connecting to the AI service. Please check your internet connection and try again.";
-        } else if (error.message.includes('HTTP error! status: 429')) {
-          return "I'm currently busy helping other users. Please wait a few seconds and try again! 🙏";
-        } else if (error.message.includes('HTTP error')) {
+        } else if (error.message.includes('HTTP error! status: 4') || error.message.includes('HTTP error! status: 5')) {
           return "The AI service is temporarily unavailable. Please try again in a moment.";
         }
       }
@@ -193,7 +190,12 @@ User question: ${prompt}`,
       const warningMessage: Message = {
         id: Date.now().toString(),
         type: "assistant",
-        content: `Please wait ${waitTime} more second${waitTime > 1 ? 's' : ''} before sending another message. This helps prevent rate limiting! 🌿`,
+        content: `Please wait ${waitTime} more second${waitTime > 1 ? 's' : ''} before asking another question. This helps me provide better responses and prevents rate limiting! 🌿
+
+While you wait, you can:
+• Browse our Plants Database for detailed herb information
+• Review previous responses in our chat history
+• Prepare your next question about medicinal plants`,
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, warningMessage]);
