@@ -1,11 +1,17 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
 export interface Offer {
   id: string;
   title: string;
   description: string;
   code: string;
-  discountType: 'percentage' | 'fixed';
+  discountType: "percentage" | "fixed";
   discountValue: number;
   minOrderAmount?: number;
   startDate: Date;
@@ -20,7 +26,10 @@ export interface Offer {
 interface OffersContextType {
   offers: Offer[];
   activeOffers: Offer[];
-  validateOffer: (code: string, orderTotal: number) => { valid: boolean; offer?: Offer; message: string };
+  validateOffer: (
+    code: string,
+    orderTotal: number,
+  ) => { valid: boolean; offer?: Offer; message: string };
   applyOffer: (code: string) => void;
   getDiscountAmount: (code: string, orderTotal: number) => number;
 }
@@ -30,7 +39,7 @@ const OffersContext = createContext<OffersContextType | undefined>(undefined);
 export function useOffers() {
   const context = useContext(OffersContext);
   if (context === undefined) {
-    throw new Error('useOffers must be used within an OffersProvider');
+    throw new Error("useOffers must be used within an OffersProvider");
   }
   return context;
 }
@@ -47,74 +56,74 @@ export function OffersProvider({ children }: OffersProviderProps) {
     const now = new Date();
     const defaultOffers: Offer[] = [
       {
-        id: 'welcome25',
-        title: 'Welcome to HerbWise!',
-        description: 'Get 25% off your first order',
-        code: 'WELCOME25',
-        discountType: 'percentage',
+        id: "welcome25",
+        title: "Welcome to HerbWise!",
+        description: "Get 25% off your first order",
+        code: "WELCOME25",
+        discountType: "percentage",
         discountValue: 25,
         minOrderAmount: 30,
         startDate: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000), // 7 days ago
         endDate: new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
         isActive: true,
         usageLimit: 1000,
-        usedCount: 0
+        usedCount: 0,
       },
       {
-        id: 'flash50',
-        title: 'Flash Sale - Limited Time!',
-        description: '$10 off orders over $50',
-        code: 'FLASH10',
-        discountType: 'fixed',
+        id: "flash50",
+        title: "Flash Sale - Limited Time!",
+        description: "$10 off orders over $50",
+        code: "FLASH10",
+        discountType: "fixed",
         discountValue: 10,
         minOrderAmount: 50,
         startDate: now,
         endDate: new Date(now.getTime() + 2 * 60 * 60 * 1000), // 2 hours from now
         isActive: true,
         usageLimit: 100,
-        usedCount: 0
+        usedCount: 0,
       },
       {
-        id: 'weekend15',
-        title: 'Weekend Special',
-        description: '15% off weekend orders',
-        code: 'WEEKEND15',
-        discountType: 'percentage',
+        id: "weekend15",
+        title: "Weekend Special",
+        description: "15% off weekend orders",
+        code: "WEEKEND15",
+        discountType: "percentage",
         discountValue: 15,
         startDate: getThisWeekend(),
         endDate: getNextMonday(),
         isActive: isWeekend(),
         usageLimit: 500,
-        usedCount: 0
+        usedCount: 0,
       },
       {
-        id: 'immune20',
-        title: 'Immune Boost Special',
-        description: '20% off immune-supporting herbs',
-        code: 'IMMUNE20',
-        discountType: 'percentage',
+        id: "immune20",
+        title: "Immune Boost Special",
+        description: "20% off immune-supporting herbs",
+        code: "IMMUNE20",
+        discountType: "percentage",
         discountValue: 20,
         startDate: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
         endDate: new Date(now.getTime() + 10 * 24 * 60 * 60 * 1000), // 10 days from now
         isActive: true,
-        targetCategories: ['Immune', 'Antiviral', 'Respiratory'],
+        targetCategories: ["Immune", "Antiviral", "Respiratory"],
         usageLimit: 200,
-        usedCount: 0
+        usedCount: 0,
       },
       {
-        id: 'bulk30',
-        title: 'Bulk Order Discount',
-        description: '$30 off orders over $150',
-        code: 'BULK30',
-        discountType: 'fixed',
+        id: "bulk30",
+        title: "Bulk Order Discount",
+        description: "$30 off orders over $150",
+        code: "BULK30",
+        discountType: "fixed",
         discountValue: 30,
         minOrderAmount: 150,
         startDate: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
         endDate: new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000), // 14 days from now
         isActive: true,
         usageLimit: 50,
-        usedCount: 0
-      }
+        usedCount: 0,
+      },
     ];
 
     setOffers(defaultOffers);
@@ -147,55 +156,69 @@ export function OffersProvider({ children }: OffersProviderProps) {
   }
 
   // Get currently active offers
-  const activeOffers = offers.filter(offer => {
+  const activeOffers = offers.filter((offer) => {
     const now = new Date();
-    return offer.isActive &&
-           now >= offer.startDate &&
-           now <= offer.endDate &&
-           (!offer.usageLimit || offer.usedCount < offer.usageLimit);
+    return (
+      offer.isActive &&
+      now >= offer.startDate &&
+      now <= offer.endDate &&
+      (!offer.usageLimit || offer.usedCount < offer.usageLimit)
+    );
   });
 
-  const validateOffer = (code: string, orderTotal: number): { valid: boolean; offer?: Offer; message: string } => {
-    const offer = offers.find(o => o.code.toLowerCase() === code.toLowerCase());
-    
+  const validateOffer = (
+    code: string,
+    orderTotal: number,
+  ): { valid: boolean; offer?: Offer; message: string } => {
+    const offer = offers.find(
+      (o) => o.code.toLowerCase() === code.toLowerCase(),
+    );
+
     if (!offer) {
-      return { valid: false, message: 'Invalid offer code' };
+      return { valid: false, message: "Invalid offer code" };
     }
 
     const now = new Date();
-    
+
     if (!offer.isActive) {
-      return { valid: false, message: 'This offer is no longer active' };
+      return { valid: false, message: "This offer is no longer active" };
     }
 
     if (now < offer.startDate) {
-      return { valid: false, message: 'This offer is not yet active' };
+      return { valid: false, message: "This offer is not yet active" };
     }
 
     if (now > offer.endDate) {
-      return { valid: false, message: 'This offer has expired' };
+      return { valid: false, message: "This offer has expired" };
     }
 
     if (offer.usageLimit && offer.usedCount >= offer.usageLimit) {
-      return { valid: false, message: 'This offer has reached its usage limit' };
-    }
-
-    if (offer.minOrderAmount && orderTotal < offer.minOrderAmount) {
-      return { 
-        valid: false, 
-        message: `Minimum order amount of $${offer.minOrderAmount} required for this offer` 
+      return {
+        valid: false,
+        message: "This offer has reached its usage limit",
       };
     }
 
-    return { valid: true, offer, message: 'Offer applied successfully!' };
+    if (offer.minOrderAmount && orderTotal < offer.minOrderAmount) {
+      return {
+        valid: false,
+        message: `Minimum order amount of $${offer.minOrderAmount} required for this offer`,
+      };
+    }
+
+    return { valid: true, offer, message: "Offer applied successfully!" };
   };
 
   const applyOffer = (code: string) => {
-    const offer = offers.find(o => o.code.toLowerCase() === code.toLowerCase());
+    const offer = offers.find(
+      (o) => o.code.toLowerCase() === code.toLowerCase(),
+    );
     if (offer) {
-      setOffers(offers.map(o => 
-        o.id === offer.id ? { ...o, usedCount: o.usedCount + 1 } : o
-      ));
+      setOffers(
+        offers.map((o) =>
+          o.id === offer.id ? { ...o, usedCount: o.usedCount + 1 } : o,
+        ),
+      );
     }
   };
 
@@ -206,7 +229,7 @@ export function OffersProvider({ children }: OffersProviderProps) {
     }
 
     const offer = validation.offer;
-    if (offer.discountType === 'percentage') {
+    if (offer.discountType === "percentage") {
       return Math.round(orderTotal * (offer.discountValue / 100) * 100) / 100;
     } else {
       return Math.min(offer.discountValue, orderTotal);
@@ -218,12 +241,10 @@ export function OffersProvider({ children }: OffersProviderProps) {
     activeOffers,
     validateOffer,
     applyOffer,
-    getDiscountAmount
+    getDiscountAmount,
   };
 
   return (
-    <OffersContext.Provider value={value}>
-      {children}
-    </OffersContext.Provider>
+    <OffersContext.Provider value={value}>{children}</OffersContext.Provider>
   );
 }

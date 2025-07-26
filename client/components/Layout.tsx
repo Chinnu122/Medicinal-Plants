@@ -101,7 +101,7 @@ export function Layout({ children }: LayoutProps) {
                 <ShoppingCart className="w-4 h-4" />
                 {cartItemsCount > 0 && (
                   <span className="absolute -top-1 -right-1 bg-herbal-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
-                    {cartItemsCount > 99 ? '99+' : cartItemsCount}
+                    {cartItemsCount > 99 ? "99+" : cartItemsCount}
                   </span>
                 )}
               </Link>
@@ -214,7 +214,7 @@ export function Layout({ children }: LayoutProps) {
               <ShoppingCart className="w-5 h-5" />
               {cartItemsCount > 0 && (
                 <span className="absolute -top-2 -right-2 bg-herbal-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-medium">
-                  {cartItemsCount > 9 ? '9+' : cartItemsCount}
+                  {cartItemsCount > 9 ? "9+" : cartItemsCount}
                 </span>
               )}
             </div>

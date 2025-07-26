@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { 
-  ArrowLeft, 
-  Star, 
-  DollarSign, 
-  Clock, 
-  MapPin, 
+import { useState } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import {
+  ArrowLeft,
+  Star,
+  DollarSign,
+  Clock,
+  MapPin,
   AlertTriangle,
   Leaf,
   Heart,
@@ -15,30 +15,44 @@ import {
   ShoppingCart,
   Plus,
   Minus,
-  Check
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
-import { allPlants } from '@/data/plants';
-import { useCart } from '@/contexts/CartContext';
-import { useAuth } from '@/contexts/AuthContext';
+  Check,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { allPlants } from "@/data/plants";
+import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function PlantDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart, getCartItemsCount } = useCart();
   const { user } = useAuth();
-  
-  const [selectedForm, setSelectedForm] = useState<'fresh' | 'dried' | 'supplement'>('dried');
+
+  const [selectedForm, setSelectedForm] = useState<
+    "fresh" | "dried" | "supplement"
+  >("dried");
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-  
-  const plant = allPlants.find(p => p.id === id);
+
+  const plant = allPlants.find((p) => p.id === id);
 
   if (!plant) {
     return (
@@ -47,23 +61,21 @@ export default function PlantDetail() {
         <p className="text-xl text-muted-foreground mb-8">
           The plant you're looking for doesn't exist in our database.
         </p>
-        <Button onClick={() => navigate('/plants')}>
-          Back to Plants
-        </Button>
+        <Button onClick={() => navigate("/plants")}>Back to Plants</Button>
       </div>
     );
   }
 
   const difficultyColors = {
-    easy: 'bg-green-100 text-green-800',
-    moderate: 'bg-yellow-100 text-yellow-800',
-    difficult: 'bg-red-100 text-red-800'
+    easy: "bg-green-100 text-green-800",
+    moderate: "bg-yellow-100 text-yellow-800",
+    difficult: "bg-red-100 text-red-800",
   };
 
   const availabilityColors = {
-    common: 'bg-green-100 text-green-800',
-    moderate: 'bg-yellow-100 text-yellow-800',
-    rare: 'bg-red-100 text-red-800'
+    common: "bg-green-100 text-green-800",
+    moderate: "bg-yellow-100 text-yellow-800",
+    rare: "bg-red-100 text-red-800",
   };
 
   const extractPrice = (priceString: string): number => {
@@ -73,20 +85,19 @@ export default function PlantDetail() {
 
   const handleAddToCart = async () => {
     if (!plant) return;
-    
+
     setIsAdding(true);
-    
+
     try {
       addToCart(plant, selectedForm, quantity);
       setShowSuccess(true);
-      
+
       // Hide success message after 2 seconds
       setTimeout(() => {
         setShowSuccess(false);
       }, 2000);
-      
     } catch (error) {
-      console.error('Error adding to cart:', error);
+      console.error("Error adding to cart:", error);
     } finally {
       setIsAdding(false);
     }
@@ -107,7 +118,7 @@ export default function PlantDetail() {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back
           </Button>
-          
+
           <div className="flex flex-col lg:flex-row gap-8">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -121,37 +132,58 @@ export default function PlantDetail() {
                 className="w-full lg:w-80 h-64 lg:h-80 object-cover rounded-xl shadow-2xl"
               />
             </motion.div>
-            
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="flex-1"
             >
-              <h1 className="text-4xl lg:text-5xl font-bold mb-2">{plant.name}</h1>
-              <p className="text-xl opacity-90 italic mb-4">{plant.scientificName}</p>
-              <p className="text-lg opacity-80 mb-6 leading-relaxed">{plant.description}</p>
-              
+              <h1 className="text-4xl lg:text-5xl font-bold mb-2">
+                {plant.name}
+              </h1>
+              <p className="text-xl opacity-90 italic mb-4">
+                {plant.scientificName}
+              </p>
+              <p className="text-lg opacity-80 mb-6 leading-relaxed">
+                {plant.description}
+              </p>
+
               <div className="flex flex-wrap gap-3 mb-6">
-                <Badge className={`${availabilityColors[plant.availability]} border-0`}>
+                <Badge
+                  className={`${availabilityColors[plant.availability]} border-0`}
+                >
                   {plant.availability}
                 </Badge>
-                <Badge className={`${difficultyColors[plant.difficulty]} border-0`}>
+                <Badge
+                  className={`${difficultyColors[plant.difficulty]} border-0`}
+                >
                   {plant.difficulty}
                 </Badge>
                 {plant.category.slice(0, 3).map((cat) => (
-                  <Badge key={cat} variant="secondary" className="bg-white/20 text-white">
+                  <Badge
+                    key={cat}
+                    variant="secondary"
+                    className="bg-white/20 text-white"
+                  >
                     {cat}
                   </Badge>
                 ))}
               </div>
-              
+
               <div className="flex gap-4">
-                <Button size="lg" className="bg-white text-herbal-600 hover:bg-gray-100">
+                <Button
+                  size="lg"
+                  className="bg-white text-herbal-600 hover:bg-gray-100"
+                >
                   <Heart className="w-5 h-5 mr-2" />
                   Save to Favorites
                 </Button>
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/20">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white text-white hover:bg-white/20"
+                >
                   <Share2 className="w-5 h-5 mr-2" />
                   Share
                 </Button>
@@ -173,7 +205,7 @@ export default function PlantDetail() {
                 <TabsTrigger value="preparation">How to Use</TabsTrigger>
                 <TabsTrigger value="precautions">Safety</TabsTrigger>
               </TabsList>
-              
+
               <TabsContent value="benefits" className="mt-6">
                 <Card>
                   <CardHeader>
@@ -203,7 +235,7 @@ export default function PlantDetail() {
                   </CardContent>
                 </Card>
               </TabsContent>
-              
+
               <TabsContent value="uses" className="mt-6">
                 <Card>
                   <CardHeader>
@@ -230,7 +262,7 @@ export default function PlantDetail() {
                   </CardContent>
                 </Card>
               </TabsContent>
-              
+
               <TabsContent value="preparation" className="mt-6">
                 <Card>
                   <CardHeader>
@@ -261,7 +293,7 @@ export default function PlantDetail() {
                   </CardContent>
                 </Card>
               </TabsContent>
-              
+
               <TabsContent value="precautions" className="mt-6">
                 <Card>
                   <CardHeader>
@@ -307,15 +339,21 @@ export default function PlantDetail() {
               <CardContent className="space-y-4">
                 <div className="flex justify-between items-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
                   <span className="font-medium">Fresh</span>
-                  <span className="text-green-600 font-bold">{plant.cost.fresh}</span>
+                  <span className="text-green-600 font-bold">
+                    {plant.cost.fresh}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
                   <span className="font-medium">Dried</span>
-                  <span className="text-yellow-600 font-bold">{plant.cost.dried}</span>
+                  <span className="text-yellow-600 font-bold">
+                    {plant.cost.dried}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                   <span className="font-medium">Supplement</span>
-                  <span className="text-blue-600 font-bold">{plant.cost.supplement}</span>
+                  <span className="text-blue-600 font-bold">
+                    {plant.cost.supplement}
+                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -331,18 +369,29 @@ export default function PlantDetail() {
               <CardContent className="space-y-4">
                 <div>
                   <Label htmlFor="form">Form</Label>
-                  <Select value={selectedForm} onValueChange={(value: 'fresh' | 'dried' | 'supplement') => setSelectedForm(value)}>
+                  <Select
+                    value={selectedForm}
+                    onValueChange={(value: "fresh" | "dried" | "supplement") =>
+                      setSelectedForm(value)
+                    }
+                  >
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="fresh">Fresh - {plant.cost.fresh}</SelectItem>
-                      <SelectItem value="dried">Dried - {plant.cost.dried}</SelectItem>
-                      <SelectItem value="supplement">Supplement - {plant.cost.supplement}</SelectItem>
+                      <SelectItem value="fresh">
+                        Fresh - {plant.cost.fresh}
+                      </SelectItem>
+                      <SelectItem value="dried">
+                        Dried - {plant.cost.dried}
+                      </SelectItem>
+                      <SelectItem value="supplement">
+                        Supplement - {plant.cost.supplement}
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
-                
+
                 <div>
                   <Label htmlFor="quantity">Quantity</Label>
                   <div className="flex items-center space-x-2 mt-1">
@@ -354,7 +403,9 @@ export default function PlantDetail() {
                     >
                       <Minus className="w-3 h-3" />
                     </Button>
-                    <span className="w-12 text-center font-medium">{quantity}</span>
+                    <span className="w-12 text-center font-medium">
+                      {quantity}
+                    </span>
                     <Button
                       variant="outline"
                       size="sm"
@@ -365,7 +416,7 @@ export default function PlantDetail() {
                     </Button>
                   </div>
                 </div>
-                
+
                 <div className="border-t pt-4">
                   <div className="flex justify-between items-center mb-4">
                     <span className="font-medium">Total:</span>
@@ -373,8 +424,8 @@ export default function PlantDetail() {
                       ${(currentPrice * quantity).toFixed(2)}
                     </span>
                   </div>
-                  
-                  <Button 
+
+                  <Button
                     onClick={handleAddToCart}
                     disabled={isAdding || showSuccess}
                     className="w-full bg-herbal-600 hover:bg-herbal-700"
@@ -385,7 +436,7 @@ export default function PlantDetail() {
                         Added to Cart!
                       </>
                     ) : isAdding ? (
-                      'Adding...'
+                      "Adding..."
                     ) : (
                       <>
                         <ShoppingCart className="w-4 h-4 mr-2" />
@@ -419,7 +470,7 @@ export default function PlantDetail() {
                     ))}
                   </div>
                 </div>
-                
+
                 <div>
                   <h4 className="font-medium mb-2 flex items-center">
                     <MapPin className="w-4 h-4 mr-2" />
@@ -447,9 +498,7 @@ export default function PlantDetail() {
                   Add to My Garden
                 </Button>
                 <Button className="w-full" variant="outline" asChild>
-                  <Link to="/assistant">
-                    Ask AI Assistant
-                  </Link>
+                  <Link to="/assistant">Ask AI Assistant</Link>
                 </Button>
                 {user && (
                   <Button className="w-full" variant="outline" asChild>

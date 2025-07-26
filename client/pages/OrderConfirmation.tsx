@@ -1,31 +1,37 @@
-import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { 
-  CheckCircle, 
-  Package, 
-  Truck, 
-  MapPin, 
+import { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import {
+  CheckCircle,
+  Package,
+  Truck,
+  MapPin,
   Calendar,
   Phone,
   Mail,
   Download,
   Share2,
-  Star
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { useCart } from '@/contexts/CartContext';
+  Star,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { useCart } from "@/contexts/CartContext";
 
 export default function OrderConfirmation() {
   const { orderId } = useParams();
   const { getOrder } = useCart();
-  const [order, setOrder] = useState(getOrder(orderId || ''));
+  const [order, setOrder] = useState(getOrder(orderId || ""));
 
   useEffect(() => {
-    const foundOrder = getOrder(orderId || '');
+    const foundOrder = getOrder(orderId || "");
     setOrder(foundOrder);
   }, [orderId, getOrder]);
 
@@ -47,24 +53,31 @@ export default function OrderConfirmation() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'confirmed': return 'bg-green-100 text-green-800';
-      case 'processing': return 'bg-blue-100 text-blue-800';
-      case 'shipped': return 'bg-purple-100 text-purple-800';
-      case 'delivered': return 'bg-green-100 text-green-800';
-      case 'cancelled': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "pending":
+        return "bg-yellow-100 text-yellow-800";
+      case "confirmed":
+        return "bg-green-100 text-green-800";
+      case "processing":
+        return "bg-blue-100 text-blue-800";
+      case "shipped":
+        return "bg-purple-100 text-purple-800";
+      case "delivered":
+        return "bg-green-100 text-green-800";
+      case "cancelled":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'confirmed':
-      case 'delivered':
+      case "confirmed":
+      case "delivered":
         return <CheckCircle className="w-4 h-4" />;
-      case 'processing':
+      case "processing":
         return <Package className="w-4 h-4" />;
-      case 'shipped':
+      case "shipped":
         return <Truck className="w-4 h-4" />;
       default:
         return <Package className="w-4 h-4" />;
@@ -86,7 +99,8 @@ export default function OrderConfirmation() {
           </div>
           <h1 className="text-3xl font-bold mb-2">Order Confirmed!</h1>
           <p className="text-xl text-muted-foreground mb-4">
-            Thank you for your order. We'll send you a confirmation email shortly.
+            Thank you for your order. We'll send you a confirmation email
+            shortly.
           </p>
           <div className="flex items-center justify-center space-x-4">
             <Badge className={`${getStatusColor(order.status)} border-0`}>
@@ -112,13 +126,17 @@ export default function OrderConfirmation() {
                 <CardHeader>
                   <CardTitle>Order Items</CardTitle>
                   <CardDescription>
-                    {order.items.length} {order.items.length === 1 ? 'item' : 'items'} ordered
+                    {order.items.length}{" "}
+                    {order.items.length === 1 ? "item" : "items"} ordered
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     {order.items.map((item, index) => (
-                      <div key={item.id} className="flex gap-4 p-4 border border-border rounded-lg">
+                      <div
+                        key={item.id}
+                        className="flex gap-4 p-4 border border-border rounded-lg"
+                      >
                         <img
                           src={item.plant.image}
                           alt={item.plant.name}
@@ -139,7 +157,9 @@ export default function OrderConfirmation() {
                           </div>
                         </div>
                         <div className="text-right">
-                          <p className="font-semibold">${(item.price * item.quantity).toFixed(2)}</p>
+                          <p className="font-semibold">
+                            ${(item.price * item.quantity).toFixed(2)}
+                          </p>
                           <p className="text-sm text-muted-foreground">
                             ${item.price.toFixed(2)} each
                           </p>
@@ -172,7 +192,9 @@ export default function OrderConfirmation() {
                         <p>{order.shippingAddress.name}</p>
                         <p>{order.shippingAddress.street}</p>
                         <p>
-                          {order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.zipCode}
+                          {order.shippingAddress.city},{" "}
+                          {order.shippingAddress.state}{" "}
+                          {order.shippingAddress.zipCode}
                         </p>
                         <p>{order.shippingAddress.country}</p>
                       </div>
@@ -181,11 +203,11 @@ export default function OrderConfirmation() {
                       <h4 className="font-medium mb-2">Delivery Estimate</h4>
                       <div className="flex items-center text-sm text-muted-foreground mb-2">
                         <Calendar className="w-4 h-4 mr-2" />
-                        {order.estimatedDelivery?.toLocaleDateString('en-US', {
-                          weekday: 'long',
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
+                        {order.estimatedDelivery?.toLocaleDateString("en-US", {
+                          weekday: "long",
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
                         })}
                       </div>
                       {order.trackingNumber && (
@@ -219,11 +241,12 @@ export default function OrderConfirmation() {
                       <div>
                         <h4 className="font-medium">Confirmation Email</h4>
                         <p className="text-sm text-muted-foreground">
-                          We've sent order details and tracking information to your email.
+                          We've sent order details and tracking information to
+                          your email.
                         </p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-start space-x-3">
                       <div className="w-8 h-8 bg-herbal-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                         <Package className="w-4 h-4 text-herbal-600" />
@@ -231,11 +254,12 @@ export default function OrderConfirmation() {
                       <div>
                         <h4 className="font-medium">Order Processing</h4>
                         <p className="text-sm text-muted-foreground">
-                          Your order is being prepared and will ship within 1-2 business days.
+                          Your order is being prepared and will ship within 1-2
+                          business days.
                         </p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-start space-x-3">
                       <div className="w-8 h-8 bg-herbal-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                         <Truck className="w-4 h-4 text-herbal-600" />
@@ -243,7 +267,8 @@ export default function OrderConfirmation() {
                       <div>
                         <h4 className="font-medium">Shipping Updates</h4>
                         <p className="text-sm text-muted-foreground">
-                          You'll receive tracking updates via email and SMS (if provided).
+                          You'll receive tracking updates via email and SMS (if
+                          provided).
                         </p>
                       </div>
                     </div>
@@ -268,35 +293,41 @@ export default function OrderConfirmation() {
                 <CardContent className="space-y-4">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
-                    <span>${(order.total + (order.discountAmount || 0)).toFixed(2)}</span>
+                    <span>
+                      ${(order.total + (order.discountAmount || 0)).toFixed(2)}
+                    </span>
                   </div>
-                  
+
                   {order.discountAmount && order.discountAmount > 0 && (
                     <div className="flex justify-between text-green-600">
-                      <span>Discount {order.offerCode && `(${order.offerCode})`}</span>
+                      <span>
+                        Discount {order.offerCode && `(${order.offerCode})`}
+                      </span>
                       <span>-${order.discountAmount.toFixed(2)}</span>
                     </div>
                   )}
-                  
+
                   <div className="flex justify-between">
                     <span>Shipping</span>
                     <span>FREE</span>
                   </div>
-                  
+
                   <div className="flex justify-between">
                     <span>Tax</span>
-                    <span>${(order.total * 0.08 / 1.08).toFixed(2)}</span>
+                    <span>${((order.total * 0.08) / 1.08).toFixed(2)}</span>
                   </div>
-                  
+
                   <Separator />
-                  
+
                   <div className="flex justify-between text-lg font-semibold">
                     <span>Total</span>
                     <span>${order.total.toFixed(2)}</span>
                   </div>
-                  
+
                   <div className="text-sm text-muted-foreground">
-                    <p>Payment Method: {order.paymentMethod.replace('_', ' ')}</p>
+                    <p>
+                      Payment Method: {order.paymentMethod.replace("_", " ")}
+                    </p>
                     <p>Order Date: {order.createdAt.toLocaleDateString()}</p>
                   </div>
                 </CardContent>
@@ -318,25 +349,26 @@ export default function OrderConfirmation() {
                     <Download className="w-4 h-4 mr-2" />
                     Download Receipt
                   </Button>
-                  
+
                   <Button variant="outline" className="w-full">
                     <Share2 className="w-4 h-4 mr-2" />
                     Share Order
                   </Button>
-                  
+
                   <Button variant="outline" className="w-full" asChild>
                     <Link to={`/orders/${order.id}`}>
                       <Package className="w-4 h-4 mr-2" />
                       Track Order
                     </Link>
                   </Button>
-                  
+
                   <Separator />
-                  
-                  <Button className="w-full bg-herbal-600 hover:bg-herbal-700" asChild>
-                    <Link to="/plants">
-                      Continue Shopping
-                    </Link>
+
+                  <Button
+                    className="w-full bg-herbal-600 hover:bg-herbal-700"
+                    asChild
+                  >
+                    <Link to="/plants">Continue Shopping</Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -357,12 +389,12 @@ export default function OrderConfirmation() {
                     <Phone className="w-4 h-4 text-herbal-600" />
                     <span>1-800-HERBWISE</span>
                   </div>
-                  
+
                   <div className="flex items-center space-x-2 text-sm">
                     <Mail className="w-4 h-4 text-herbal-600" />
                     <span>support@herbwise.com</span>
                   </div>
-                  
+
                   <Button variant="outline" className="w-full">
                     Contact Support
                   </Button>

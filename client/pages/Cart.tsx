@@ -1,64 +1,78 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { 
-  ShoppingCart, 
-  Plus, 
-  Minus, 
-  Trash2, 
-  ArrowRight, 
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import {
+  ShoppingCart,
+  Plus,
+  Minus,
+  Trash2,
+  ArrowRight,
   ShoppingBag,
   Tag,
   Gift,
   Clock,
-  CheckCircle
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { useCart } from '@/contexts/CartContext';
-import { useOffers } from '@/contexts/OffersContext';
-import { useAuth } from '@/contexts/AuthContext';
+  CheckCircle,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { useCart } from "@/contexts/CartContext";
+import { useOffers } from "@/contexts/OffersContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Cart() {
-  const { items, removeFromCart, updateQuantity, getCartTotal, getCartItemsCount } = useCart();
+  const {
+    items,
+    removeFromCart,
+    updateQuantity,
+    getCartTotal,
+    getCartItemsCount,
+  } = useCart();
   const { activeOffers, validateOffer, getDiscountAmount } = useOffers();
   const { user } = useAuth();
   const navigate = useNavigate();
-  
-  const [offerCode, setOfferCode] = useState('');
-  const [appliedOffer, setAppliedOffer] = useState<string>('');
-  const [offerMessage, setOfferMessage] = useState('');
+
+  const [offerCode, setOfferCode] = useState("");
+  const [appliedOffer, setAppliedOffer] = useState<string>("");
+  const [offerMessage, setOfferMessage] = useState("");
 
   const subtotal = getCartTotal();
-  const discountAmount = appliedOffer ? getDiscountAmount(appliedOffer, subtotal) : 0;
+  const discountAmount = appliedOffer
+    ? getDiscountAmount(appliedOffer, subtotal)
+    : 0;
   const total = subtotal - discountAmount;
 
   const handleApplyOffer = () => {
     if (!offerCode.trim()) return;
-    
+
     const validation = validateOffer(offerCode, subtotal);
     setOfferMessage(validation.message);
-    
+
     if (validation.valid) {
       setAppliedOffer(offerCode);
     }
   };
 
   const handleRemoveOffer = () => {
-    setAppliedOffer('');
-    setOfferCode('');
-    setOfferMessage('');
+    setAppliedOffer("");
+    setOfferCode("");
+    setOfferMessage("");
   };
 
   const handleCheckout = () => {
     if (!user) {
-      navigate('/signin');
+      navigate("/signin");
       return;
     }
-    navigate('/checkout');
+    navigate("/checkout");
   };
 
   if (items.length === 0) {
@@ -77,7 +91,11 @@ export default function Cart() {
           <p className="text-muted-foreground mb-8">
             Discover our collection of medicinal plants and natural remedies
           </p>
-          <Button asChild size="lg" className="bg-herbal-600 hover:bg-herbal-700">
+          <Button
+            asChild
+            size="lg"
+            className="bg-herbal-600 hover:bg-herbal-700"
+          >
             <Link to="/plants">
               <ShoppingBag className="w-4 h-4 mr-2" />
               Start Shopping
@@ -100,7 +118,8 @@ export default function Cart() {
         >
           <h1 className="text-3xl font-bold mb-2">Shopping Cart</h1>
           <p className="text-muted-foreground">
-            {getCartItemsCount()} {getCartItemsCount() === 1 ? 'item' : 'items'} in your cart
+            {getCartItemsCount()} {getCartItemsCount() === 1 ? "item" : "items"}{" "}
+            in your cart
           </p>
         </motion.div>
 
@@ -122,15 +141,20 @@ export default function Cart() {
                         alt={item.plant.name}
                         className="w-20 h-20 object-cover rounded-lg flex-shrink-0"
                       />
-                      
+
                       <div className="flex-1 min-w-0">
                         <div className="flex justify-between items-start mb-2">
                           <div>
-                            <h3 className="font-semibold text-lg">{item.plant.name}</h3>
+                            <h3 className="font-semibold text-lg">
+                              {item.plant.name}
+                            </h3>
                             <p className="text-sm text-muted-foreground italic">
                               {item.plant.scientificName}
                             </p>
-                            <Badge variant="outline" className="mt-1 capitalize">
+                            <Badge
+                              variant="outline"
+                              className="mt-1 capitalize"
+                            >
                               {item.form}
                             </Badge>
                           </div>
@@ -143,13 +167,15 @@ export default function Cart() {
                             <Trash2 className="w-4 h-4" />
                           </Button>
                         </div>
-                        
+
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                              onClick={() =>
+                                updateQuantity(item.id, item.quantity - 1)
+                              }
                               className="w-8 h-8 p-0"
                             >
                               <Minus className="w-3 h-3" />
@@ -160,13 +186,15 @@ export default function Cart() {
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                              onClick={() =>
+                                updateQuantity(item.id, item.quantity + 1)
+                              }
                               className="w-8 h-8 p-0"
                             >
                               <Plus className="w-3 h-3" />
                             </Button>
                           </div>
-                          
+
                           <div className="text-right">
                             <p className="font-semibold text-lg">
                               ${(item.price * item.quantity).toFixed(2)}
@@ -202,7 +230,10 @@ export default function Cart() {
                   </CardHeader>
                   <CardContent className="space-y-3">
                     {activeOffers.slice(0, 3).map((offer) => (
-                      <div key={offer.id} className="p-3 bg-herbal-50 dark:bg-herbal-900/20 rounded-lg">
+                      <div
+                        key={offer.id}
+                        className="p-3 bg-herbal-50 dark:bg-herbal-900/20 rounded-lg"
+                      >
                         <div className="flex items-start justify-between mb-1">
                           <h4 className="font-medium text-sm">{offer.title}</h4>
                           <Badge variant="secondary" className="text-xs">
@@ -265,7 +296,9 @@ export default function Cart() {
                         <Input
                           placeholder="Enter promo code"
                           value={offerCode}
-                          onChange={(e) => setOfferCode(e.target.value.toUpperCase())}
+                          onChange={(e) =>
+                            setOfferCode(e.target.value.toUpperCase())
+                          }
                           className="flex-1"
                         />
                         <Button
@@ -277,7 +310,9 @@ export default function Cart() {
                         </Button>
                       </div>
                       {offerMessage && (
-                        <p className={`text-sm ${offerMessage.includes('successfully') ? 'text-green-600' : 'text-red-600'}`}>
+                        <p
+                          className={`text-sm ${offerMessage.includes("successfully") ? "text-green-600" : "text-red-600"}`}
+                        >
                           {offerMessage}
                         </p>
                       )}
@@ -302,39 +337,37 @@ export default function Cart() {
                     <span>Subtotal</span>
                     <span>${subtotal.toFixed(2)}</span>
                   </div>
-                  
+
                   {discountAmount > 0 && (
                     <div className="flex justify-between text-green-600">
                       <span>Discount ({appliedOffer})</span>
                       <span>-${discountAmount.toFixed(2)}</span>
                     </div>
                   )}
-                  
+
                   <div className="flex justify-between text-sm text-muted-foreground">
                     <span>Shipping</span>
                     <span>FREE</span>
                   </div>
-                  
+
                   <Separator />
-                  
+
                   <div className="flex justify-between text-lg font-semibold">
                     <span>Total</span>
                     <span>${total.toFixed(2)}</span>
                   </div>
-                  
-                  <Button 
+
+                  <Button
                     onClick={handleCheckout}
-                    className="w-full bg-herbal-600 hover:bg-herbal-700" 
+                    className="w-full bg-herbal-600 hover:bg-herbal-700"
                     size="lg"
                   >
-                    {user ? 'Proceed to Checkout' : 'Sign In to Checkout'}
+                    {user ? "Proceed to Checkout" : "Sign In to Checkout"}
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
-                  
+
                   <Button variant="outline" className="w-full" asChild>
-                    <Link to="/plants">
-                      Continue Shopping
-                    </Link>
+                    <Link to="/plants">Continue Shopping</Link>
                   </Button>
                 </CardContent>
               </Card>

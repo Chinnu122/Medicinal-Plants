@@ -69,7 +69,10 @@ export default function App() {
                 <Route path="/plants/:id" element={<PlantDetail />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/checkout" element={<Checkout />} />
-                <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />
+                <Route
+                  path="/order-confirmation/:orderId"
+                  element={<OrderConfirmation />}
+                />
                 <Route path="/orders" element={<Orders />} />
                 <Route path="/orders/:orderId" element={<Orders />} />
                 <Route path="/assistant" element={<AIAssistant />} />
