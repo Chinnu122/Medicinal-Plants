@@ -180,7 +180,7 @@ export function Layout({ children }: LayoutProps) {
 
       {/* Mobile Navigation */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur border-t border-border/40">
-        <div className="grid grid-cols-4 h-16">
+        <div className="grid grid-cols-5 h-16">
           {navigation.map((item) => {
             const Icon = item.icon;
             return (
@@ -199,6 +199,27 @@ export function Layout({ children }: LayoutProps) {
               </Link>
             );
           })}
+
+          {/* Cart */}
+          <Link
+            to="/cart"
+            className={cn(
+              "flex flex-col items-center justify-center space-y-1 text-xs transition-colors relative",
+              location.pathname === "/cart"
+                ? "text-herbal-600 dark:text-herbal-400"
+                : "text-muted-foreground",
+            )}
+          >
+            <div className="relative">
+              <ShoppingCart className="w-5 h-5" />
+              {cartItemsCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-herbal-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-medium">
+                  {cartItemsCount > 9 ? '9+' : cartItemsCount}
+                </span>
+              )}
+            </div>
+            <span>Cart</span>
+          </Link>
         </div>
       </nav>
     </div>
