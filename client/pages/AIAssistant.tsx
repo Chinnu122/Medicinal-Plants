@@ -184,6 +184,22 @@ User question: ${prompt}`,
   const handleSendMessage = async () => {
     if (!input.trim() || isLoading) return;
 
+    // Check if we're sending requests too quickly
+    const now = Date.now();
+    const timeSinceLastRequest = now - lastRequestTime;
+
+    if (timeSinceLastRequest < MIN_REQUEST_INTERVAL) {
+      const waitTime = Math.ceil((MIN_REQUEST_INTERVAL - timeSinceLastRequest) / 1000);
+      const warningMessage: Message = {
+        id: Date.now().toString(),
+        type: "assistant",
+        content: `Please wait ${waitTime} more second${waitTime > 1 ? 's' : ''} before sending another message. This helps prevent rate limiting! 🌿`,
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, warningMessage]);
+      return;
+    }
+
     const userMessage: Message = {
       id: Date.now().toString(),
       type: "user",
@@ -192,11 +208,13 @@ User question: ${prompt}`,
     };
 
     setMessages((prev) => [...prev, userMessage]);
+    const currentInput = input.trim();
     setInput("");
     setIsLoading(true);
+    setLastRequestTime(now);
 
     try {
-      const aiResponse = await callGoogleAI(input.trim());
+      const aiResponse = await callGoogleAI(currentInput);
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -216,7 +234,7 @@ User question: ${prompt}`,
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         type: "assistant",
-        content: "Sorry, I encountered an error. Please try again.",
+        content: "Sorry, I encountered an error. Please try again in a moment.",
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, errorMessage]);
