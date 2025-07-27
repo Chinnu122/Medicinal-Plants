@@ -421,7 +421,7 @@ export default function PlantDetail() {
                   <div className="flex justify-between items-center mb-4">
                     <span className="font-medium">Total:</span>
                     <span className="text-xl font-bold text-herbal-600">
-                      ${(currentPrice * quantity).toFixed(2)}
+                      ₹{(currentPrice * quantity).toFixed(2)}
                     </span>
                   </div>
 

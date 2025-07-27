@@ -197,10 +197,10 @@ export default function Cart() {
 
                           <div className="text-right">
                             <p className="font-semibold text-lg">
-                              ${(item.price * item.quantity).toFixed(2)}
+                              ₹{(item.price * item.quantity).toFixed(2)}
                             </p>
                             <p className="text-sm text-muted-foreground">
-                              ${item.price.toFixed(2)} each
+                              ₹{item.price.toFixed(2)} each
                             </p>
                           </div>
                         </div>
@@ -335,13 +335,13 @@ export default function Cart() {
                 <CardContent className="space-y-4">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
-                    <span>${subtotal.toFixed(2)}</span>
+                    <span>₹{subtotal.toFixed(2)}</span>
                   </div>
 
                   {discountAmount > 0 && (
                     <div className="flex justify-between text-green-600">
                       <span>Discount ({appliedOffer})</span>
-                      <span>-${discountAmount.toFixed(2)}</span>
+                      <span>-₹{discountAmount.toFixed(2)}</span>
                     </div>
                   )}
 
@@ -354,7 +354,7 @@ export default function Cart() {
 
                   <div className="flex justify-between text-lg font-semibold">
                     <span>Total</span>
-                    <span>${total.toFixed(2)}</span>
+                    <span>₹{total.toFixed(2)}</span>
                   </div>
 
                   <Button
