@@ -79,7 +79,7 @@ export default function PlantDetail() {
   };
 
   const extractPrice = (priceString: string): number => {
-    const match = priceString.match(/\$(\d+)/);
+    const match = priceString.match(/₹(\d+)/);
     return match ? parseInt(match[1]) : 0;
   };
 
