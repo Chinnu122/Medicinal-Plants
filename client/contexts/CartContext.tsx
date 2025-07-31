@@ -122,8 +122,8 @@ export function CartProvider({ children }: CartProviderProps) {
   }, [orders]);
 
   const extractPrice = (priceString: string): number => {
-    // Extract price from strings like "$8-15/lb", "$10-25/bottle"
-    const match = priceString.match(/\$(\d+)/);
+    // Extract price from strings like "₹50-80/kg", "₹300-500/bottle"
+    const match = priceString.match(/₹(\d+)/);
     return match ? parseInt(match[1]) : 0;
   };
 

@@ -72,11 +72,11 @@ export function OffersProvider({ children }: OffersProviderProps) {
       {
         id: "flash50",
         title: "Flash Sale - Limited Time!",
-        description: "$10 off orders over $50",
+        description: "₹250 off orders over ₹1200",
         code: "FLASH10",
         discountType: "fixed",
-        discountValue: 10,
-        minOrderAmount: 50,
+        discountValue: 250,
+        minOrderAmount: 1200,
         startDate: now,
         endDate: new Date(now.getTime() + 2 * 60 * 60 * 1000), // 2 hours from now
         isActive: true,
@@ -113,11 +113,11 @@ export function OffersProvider({ children }: OffersProviderProps) {
       {
         id: "bulk30",
         title: "Bulk Order Discount",
-        description: "$30 off orders over $150",
+        description: "₹750 off orders over ₹3750",
         code: "BULK30",
         discountType: "fixed",
-        discountValue: 30,
-        minOrderAmount: 150,
+        discountValue: 750,
+        minOrderAmount: 3750,
         startDate: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
         endDate: new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000), // 14 days from now
         isActive: true,
