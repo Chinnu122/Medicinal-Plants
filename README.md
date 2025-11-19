@@ -1,6 +1,17 @@
 # 🌿 HerbWise - Medicinal Plants Database
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Built with React](https://img.shields.io/badge/Built%20with-React-61DAFB?logo=react)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Netlify Status](https://img.shields.io/badge/Netlify-Ready-00C7B7?logo=netlify)](https://www.netlify.com/)
+
 A comprehensive, AI-powered web application for exploring and learning about medicinal plants. HerbWise combines ancient herbal wisdom with modern technology to make natural healing accessible and affordable for everyone.
+
+## 🌐 Live Demo
+
+🔗 **[View Live Website](https://your-site-name.netlify.app)** *(Update this URL after deploying to Netlify)*
+
+> **Note**: After deploying to Netlify, update the URL above with your actual Netlify site URL.
 
 ![HerbWise Banner](https://images.unsplash.com/photo-1628260412297-a3377e45006f?w=1200&h=300&fit=crop)
 
@@ -75,6 +86,10 @@ A comprehensive, AI-powered web application for exploring and learning about med
 ### Prerequisites
 - Node.js (v18 or higher)
 - npm or yarn package manager
+
+### Quick Start
+
+See [QUICK_START.md](./QUICK_START.md) for a 5-minute setup guide!
 
 ### Setup Instructions
 
@@ -270,6 +285,13 @@ We welcome contributions! Here's how you can help:
 ## 📝 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 📖 Documentation
+
+- **[Quick Start Guide](./QUICK_START.md)** - Get started in 5 minutes
+- **[Usage Guide](./USAGE.md)** - Comprehensive user manual
+- **[Deployment Guide](./DEPLOYMENT.md)** - Deploy to production
+- **[Project Information](./PROJECT_INFO.md)** - Vision, use cases, and roadmap
 
 ## 🙏 Acknowledgments
 
