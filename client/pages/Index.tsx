@@ -445,7 +445,7 @@ export default function Index() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg" variant="secondary">
-                <Link to="/search">
+                <Link to="/plants">
                   <Search className="w-5 h-5 mr-2" />
                   Find Your Plant
                 </Link>

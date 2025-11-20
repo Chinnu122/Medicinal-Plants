@@ -324,6 +324,19 @@ export const extendedCategories = [
 
 // Function to generate additional plants to reach 100+
 export const generateAdditionalPlants = (): MedicinalPlant[] => {
+  const plantImages = [
+    "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?w=400&h=300&fit=crop",
+    "https://images.unsplash.com/photo-1565876465021-3c4463eede12?w=400&h=300&fit=crop",
+    "https://images.unsplash.com/photo-1564419320461-6870880221ad?w=400&h=300&fit=crop",
+    "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&h=300&fit=crop",
+    "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop",
+    "https://images.unsplash.com/photo-1611909023032-2d6b3134ecba?w=400&h=300&fit=crop",
+    "https://images.unsplash.com/photo-1628556270448-4d4e4148e1b1?w=400&h=300&fit=crop",
+    "https://images.unsplash.com/photo-1553199193-fd38e6fa4c91?w=400&h=300&fit=crop",
+    "https://images.unsplash.com/photo-1582581431304-4f6e44d9f473?w=400&h=300&fit=crop",
+    "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=300&fit=crop",
+  ];
+
   const additionalPlantNames = [
     "Dandelion",
     "Nettle",
@@ -431,7 +444,7 @@ export const generateAdditionalPlants = (): MedicinalPlant[] => {
     id: `${21 + index}`,
     name,
     scientificName: `Plantus ${name.toLowerCase().replace(/\s+/g, "")}`,
-    image: `https://images.unsplash.com/photo-${1500000000000 + index}?w=400&h=300&fit=crop`,
+    image: plantImages[index % plantImages.length],
     description: `${name} is a valuable medicinal plant with traditional healing properties.`,
     benefits: [
       "Healing",
